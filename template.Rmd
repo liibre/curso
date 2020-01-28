@@ -1,0 +1,58 @@
+---
+title: "curso de formação em R e git"
+author: "Andrea Sánchez-Tapia, Sara Mortara, Diogo Rocha"
+date: "28/01/2020"
+fontsize: 14pt
+output: 
+  beamer_presentation:
+    latex_engine: xelatex 
+    incremental: true
+    template:
+    
+header-includes:
+  - \usepackage{longtable,booktabs}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{xcolor}
+  - \usepackage{subfig}
+  - \usepackage{fontspec}
+  - \usefonttheme{professionalfonts} 
+  - \usefonttheme{serif} 
+  - \setmainfont{Roboto Condensed}
+  - \definecolor{cor1}{HTML}{A70000}
+  - \definecolor{cor2}{HTML}{1C1C19} 
+  - \definecolor{cor3}{HTML}{ff0000}
+  - \setbeamercolor{title}{fg = cor1}
+  - \setbeamercolor{frametitle}{fg = cor1}
+  - \setbeamercolor{structure}{fg = cor2}
+  - \renewcommand\alert[1]{\textcolor{cor3}{#1}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown presentation. \alert{Markdown} is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
