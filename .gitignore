@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 *.pdf
+# for Jekyll site
+_site
