@@ -1,12 +1,16 @@
-image: ruby:2.1
+image: node:9.11.1
 
 pages:
   script:
-  - gem install jekyll
-  - gem i rubygems-update -v '<3' && update_rubygems
-  - gem install bundler	  - gem install bundler
+    - cd website
+    - yarn install
+    - yarn build
+    # The build directory is created based on the value set for projectName in
+    # website/siteConfig.js. If you change it there, you need to change it here
+    # as well.
+    - mv ./build/docusaurus ../public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master
