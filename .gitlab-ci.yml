@@ -5,7 +5,6 @@ pages:
   - gem install jekyll
   - gem i rubygems-update -v '<3' && update_rubygems
   - gem install bundler	  - gem install bundler
-  - jekyll build -d public/
   artifacts:
     paths:
     - public
