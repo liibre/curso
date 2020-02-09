@@ -1,8 +1,10 @@
-image: ruby:2.3
+image: ruby:2.1
 
 pages:
   script:
   - gem install jekyll
+  - gem i rubygems-update -v '<3' && update_rubygems
+  - gem install bundler	  - gem install bundler
   - jekyll build -d public/
   artifacts:
     paths:
