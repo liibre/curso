@@ -1,0 +1,264 @@
+---
+title: "estilo de código"
+author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo Rocha"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+fontsize: 14pt
+output: 
+  beamer_presentation:
+    latex_engine: xelatex 
+    incremental: true
+    template:
+    
+header-includes:
+  - \usepackage{longtable,booktabs}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{xcolor}
+  - \usepackage{subfig}
+  - \usepackage{fontspec}
+  - \usefonttheme{professionalfonts} 
+  - \usefonttheme{serif} 
+  - \setmainfont{Roboto Condensed}
+  - \definecolor{cor1}{HTML}{A70000}
+  - \definecolor{cor2}{HTML}{1C1C19} 
+  - \definecolor{cor3}{HTML}{ff0000}
+  - \setbeamercolor{title}{fg = cor1}
+  - \setbeamercolor{frametitle}{fg = cor1}
+  - \setbeamercolor{structure}{fg = cor2}
+  - \renewcommand\alert[1]{\textcolor{cor3}{#1}}
+  - \setbeamertemplate{navigation symbols}{
+    {  \insertslidenavigationsymbol 
+    \insertframenavigationsymbol   
+    \insertsubsectionnavigationsymbol  
+    \insertsectionnavigationsymbol
+    \insertdocnavigationsymbol  
+    \insertbackfindforwardnavigationsymbol 
+    \hspace{1em}  
+    \usebeamerfont{footline} 
+    \insertframenumber/\inserttotalframenumber }
+    \setcounter{page}{1} 
+    \pagenumbering{arabic} }
+---
+
+```{r setup , echo = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
+## sobre
+\tableofcontents
+
+## 
+\section{1. padronização}
+
+## por que?
+
+\pause \large"Good coding style is like using correct punctuation. You can manage without it, but it sure makes things easier to read." 
+\flushright Hadley Wickham
+
+\includegraphics[scale = .2]{figs/hadley.jpg} 
+
+## o estilo
+
++ [Google's R style guide](https://google.github.io/styleguide/Rguide.html)
++ [tidyverse](https://style.tidyverse.org/)
++ [Advanced R](http://adv-r.had.co.nz/Style.html)
+
+\pause independente do estilo, o que importa é ser consistente!
+
+## ferramentas
+
+\begin{itemize}
+\item atalhos em seu editor de texto para indentação automática
+\item RStudio: \\
+\hspace{.5cm}   Ctrl+I $\rightarrow$ Reindent lines \\
+\hspace{.5cm}   Ctrl+Shift+A $\rightarrow$ Reformat code
+\item pacote \textbf{formatR}
+\end{itemize}
+
+## nomes
+
+“There are only two hard things in Computer Science: cache invalidation and naming things.”
+
+\flushright — Phil Karlton
+
+## nomes de funções
+
+```
+# Good
+fit-models.R
+utility-functions.R
+
+# Bad
+foo.r
+stuff.r
+```
+  
+## nomes de scripts
+
+```
+0-download.R
+1-parse.R
+2-explore.R
+```
+
+## nomes de objetos
+\framesubtitle{consistência acima de tudo!}
+
++ alllowercase <- `plotpca`
++ period.separated <- `plot.pca`
++ underscore_separated <- `plot_pca`
++ lowerCamelCase <- `plotPca`
++ UpperCamelCase <- `PlotPca`
+
+## nomes de objetos
+
++ concisos e com conteúdo
++ variáveis $\rightarrow$ substantivos
++ funções $\rightarrow$ verbos
+
+## consistência para funções, objetos e arquivos
+
+Exemplo:
+
++ arquivos: lendo_dados.R
++ funções: plotPca.R
++ variáveis: dados.traits
+
+## 
+
+\section{2. sintaxe}
+
+## atribuição a objetos <-
+
+```{r}
+#Bad
+path_to_file = "data/data_raw.csv"
+data = read.table(file = path_to_file, 
+                  sep = ",", 
+                  header = TRUE)
+
+
+#Good
+path_to_file <- "data/data_raw.csv"
+data <- read.table(file = path_to_file, 
+                   sep = ",", 
+                   header = TRUE)
+```
+
+## espaçamento
+
+\footnotesize
+```{r}
+# Good
+average <- mean(feet / 12 + inches, na.rm = TRUE)
+
+# Bad
+average<-mean(feet/12+inches,na.rm=TRUE)
+```
+
+## exceção do espaçamento
+
+```{r}
+# Good
+x <- 1:10
+base::get
+
+# Bad
+x <- 1 : 10
+base :: get
+```
+
+## espaço depois do parênteses
+
+```{r}
+# Good
+if (debug) do(x)
+plot(x, y)
+
+# Bad
+if(debug)do(x)
+plot (x, y)
+```
+
+## espaço depois da vírgula
+
+```{r}
+# Bad
+x[1,]
+
+# Good
+x[1, ]
+```
+
+## indentação
+
+\footnotesize
+```{r}
+# Bad
+data <- read.table(file = path_to_file, 
+  sep = ",", 
+header = TRUE)
+
+# Not so good
+data <- read.table(file = path_to_file, sep = ",", header = TRUE)
+
+# Better
+data <- read.table(file = path_to_file, 
+                   sep = ",", 
+                   header = TRUE)
+```
+
+## chaves
+\framesubtitle{quando fazemos funções ou ciclos}
+
+\footnotesize
+```{r}
+long_function_name <- function(a = "a long argument", 
+                               b = "another argument",
+                               c = "another long argument") {
+  # As usual code is indented by two spaces.
+}
+```
+
+## separação do código em seções
+
+```{r}
+# lendo dados #### OU
+# lendo dados ----
+
+## especies ####
+sp <- read.csv("data/especies.csv")
+
+## ambiente ####
+env <- read.csv("data/environment.csv")
+```
+
+## 
+\section{3. comentários}
+
+## comentários
+
+\center
+\only<1>{\includegraphics[scale = .5]{figs/no_comment.png}}
+\only<2>{\includegraphics[scale = .37]{figs/code_comment.jpg}}
+
+## comentários
+
+explicar o por quê e não o que
+
++ comunicar o que o código \alert{deveria} fazer
++ comentários para outro(a) desenvolvedor(a) ou coleguinha
++ comentários para salientar dúvidas ou potenciais problemas
++ atualizar os comentários juntamente com mudanças de conteúdo
+
+## boas práticas
+
+\center
+\includegraphics[scale = .4]{figs/best_practices.png}
+
+## boas práticas
+
+1. ser consistente nos nomes
+3. comentar de forma informativa o código
+2. separar commits de conteúdo e de formato
