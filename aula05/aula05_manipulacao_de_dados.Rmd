@@ -1,0 +1,168 @@
+---
+title: "manipulação de dados"
+author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo Rocha"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+fontsize: 14pt
+output: 
+  beamer_presentation:
+    latex_engine: xelatex 
+    incremental: true
+    template:
+    
+header-includes:
+  - \usepackage{longtable,booktabs}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{xcolor}
+  - \usepackage{subfig}
+  - \usepackage{fontspec}
+  - \usefonttheme{professionalfonts} 
+  - \usefonttheme{serif} 
+  - \setmainfont{Roboto Condensed}
+  - \definecolor{cor1}{HTML}{A70000}
+  - \definecolor{cor2}{HTML}{1C1C19} 
+  - \definecolor{cor3}{HTML}{ff0000}
+  - \setbeamercolor{title}{fg = cor1}
+  - \setbeamercolor{frametitle}{fg = cor1}
+  - \setbeamercolor{structure}{fg = cor2}
+  - \renewcommand\alert[1]{\textcolor{cor3}{#1}}
+  - \setbeamertemplate{navigation symbols}{
+    {  \insertslidenavigationsymbol 
+    \insertframenavigationsymbol   
+    \insertsubsectionnavigationsymbol  
+    \insertsectionnavigationsymbol
+    \insertdocnavigationsymbol  
+    \insertbackfindforwardnavigationsymbol 
+    \hspace{1em}  
+    \usebeamerfont{footline} 
+    \insertframenumber/\inserttotalframenumber }
+    \setcounter{page}{1} 
+    \pagenumbering{arabic} }
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(tinytex.verbose = TRUE)
+library(GGally)
+```
+
+## sobre a aula
+
+\Large
+\tableofcontents
+
+## 
+
+\section{1. dados de biodiversidade}
+
+
+## dados & conhecimento
+
+\center 
+\only<1>{\includegraphics[width = 9cm]{figs/Data-Wisdom.jpg}}
+\only<2>{\includegraphics[width = 9cm]{figs/DIKW-Pyramid.png}}
+
+## dados de biodiversidade
+\framesubtitle{museus \& herbários}
+
+\includegraphics[width=6cm]{figs/mz_ictio.jpg}
+\hfill
+\includegraphics[width=4cm]{figs/herbarioRB.jpg}
+
+## dados de biodiversidade
+\framesubtitle{amostragem}
+
+\center
+\includegraphics[width=4cm]{figs/peic.jpg}
+
+## componentes dos dados de biodiversidade
+
++ espécies (informação taxonômica)
++ atributos das espécies
++ localidades
++ ocorrências
++ variáveis: altura, peso... 
+
+## padronização de dados em biodiversidade 
+\framesubtitle{\href{https://dwc.tdwg.org/}{\underline{Darwin Core}}}
+
+\center 
+\only<1>{
+facilitar o compartilhamento da informação sobre diversidade biológica \\
+
+\vspace{1cm}
+
+\includegraphics[scale = .6]{figs/darwin.jpeg}}
+\only<2>{\includegraphics[scale = .3]{figs/dwc_scheme.png}}
+
+## 
+
+\section{2. bases de dados relacionais}
+
+## como funcionam as bases de dados relacionais
+
++ diferentes dados são organizados em diferentes tabelas
++ tabelas são integradas
++ identificador comum para cada tabela
++ em geral organizadas em \alert{SQL} (\emph{Structured Query Language})
+
+## como lidamos com dados relacionais
+
++ tipicamente análises de dados em diferentes tabelas
++ relações entre as tabelas são feitas aos pares
++ relações de três ou mais tabelas são sempre propriedades das relações de cada par
++ usamos \alert{verbos} para trabalhar com pares de tabelas
+
+## tipos de verbos
+
++ mutating
++ filtering
++ set operations
++ no R manipulação de bases pode ser feita dentro dos pacotes __base__ e __dplyr__
+
+## pacote __dplyr__
+
+\includegraphics[scale = .06]{figs/dplyr.png} construído a partir da lógica de bases relacionais
+
+\vspace{1cm}
+
++ mais fácil que SQL porque é voltado para análise de dados
++ \alert{gramática} para manipulação de dados
++ `mutate()`
++ `filter()`
+
+## estrutura de dados
+
+\center
+\includegraphics[scale = .5]{figs/dplyr2.png}
+
+## chaves
+
+\center
+\includegraphics[scale = .25]{figs/database_byhand.jpg}
+
+## chaves 
+
++ \alert{chave primária} $\rightarrow$ identifica uma observação em sua própria tabela
++ \alert{chave estrangeira} $\rightarrow$ identifica uma observação em uma outra tabela
++ uma variável pode ser uma chave primária em uma tabela e uma chave estrangeira em outra
++ toda chave primária deve conter uma informação única!
++ toda tabela deve ter uma chave primária
+
+## relação
+
+é data pela \alert{chave primária} e sua respectiva \alert{chave estrangeira}
+
+\vspace{1cm}
+
++ 1-para-muitas
++ 1-para-1
++ usamos as chaves para combinar tabelas
++ usamos `merge()` (__base__) ou `join()` (__dplyr__) 
+
+## usando relações para juntar dados
+
+\center
+\includegraphics[scale = .4]{figs/join.png}
+
+## equivalências entre __dplyr__ e __base__
