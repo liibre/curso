@@ -1,0 +1,118 @@
+---
+title: "projetos de análise de dados usando R"
+subtitle: "gestão, armazenamento e limpeza de dados"
+author: "Diogo Rocha, Sara Mortara, Andrea Sánchez-Tapia"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+duo_accent(
+  primary_color = "#A70000",
+  secondary_color = "#ff0000",
+  white_color = "white",
+  
+  header_font_google = google_font("Roboto Condensed"),
+  text_font_google   = google_font("Roboto Condensed", "300", "300i"),
+  code_font_google   = google_font("Ubuntu Mono"), text_font_size = "30px"
+)
+```
+
+## gestao de dados
+
++ digitalizaçao - métodos
++ versoes em papel 
++ backup, repositórios
++ armazenamento de longo prazo
+
+---
+
+## NAO MODIFICAR DADOS BRUTOS  
+
++ salvar dados brutos e modificados por aparte, indicando operações que foram realizadas. scripts independentes
+
++ em git. planilha de excel -> leitura -> escrever como .csv
++ __se algo mudar nesse passo o git vai saber__
+(mas nao deveria)
+
++ script---- mudando---- salvar a versao modificados com outro nome. 
+
+---
+## formato de planilhas
++ uma linha uma observacao
++ uma coluna uma variavel - sem info no nome - tidy
+formato - bom senso 
+varias tabelas boas > uma tabela ruim
+juntar tabelas com identificadores unicos - id para individuo - 
+
+---
+## manipulacao de dados usando `dplyr`
+tidyverse - dplyr
+algumas ações principais
+select (colunas)
+filter (linhas)
+mutate (criar colunas)
+operações de junção de tabelas: `join`
+`left_join`
+`full_join`
+`anti_join`
+
+para isso é necessário ter colunas em comum com identificadores únicos
+
+
+---
+background-image: url("./figs/4thcorner.jpg")
+background-size: 40%
+background-position: 90% 50%
+
+## as tabelas
+
+.pull-left[
++ De comunidade (parcelas, espécie)
++ De variáveis ambientais (parcelas, variáveis)
++ De atributos das espécies + informação taxonômica
+
+### É essencial ter um identificador único para poder manipular as tabelas
+
+]
+---
+## o formato dos dados da planilha é vertical
+
+```{r, echo = F, eval = F}
+library(vegan)
+library(tidyr)
+library(dplyr)
+BCI %>% tibble::rownames_to_column("parcela") %>%
+  gather(especie, n, -1) %>% arrange(parcela) %>% write.csv("./aula10/data/BCI.csv")
+```
+
+```{r, echo = F}
+bci <- read.csv("./data/BCI.csv", row.names = 1)
+head(bci)
+tail(bci)
+```
+---
+### Precisamos do formato com as espécies nas colunas
+
+```{r}
+com_matrix <- tidyr::spread(bci, especie, n, fill = 0)
+head(com_matrix[,1:4])
+```
+
+---
+
+Tirando a coluna parcela e botando ela como row name
+
+```{r}
+com_matrix <- tibble::column_to_rownames(com_matrix, "parcela")
+head(com_matrix[, 1:4])
+```
+
