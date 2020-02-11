@@ -3,6 +3,8 @@ title: 'Estrutura de pastas e uso do terminal'
 author: "Andrea Sánchez-Tapia, Sara Mortara & Diogo S. B. Rocha"
 date: "`r Sys.Date()`"
 output: 
+    md_document:
+        variant: markdown_github
     html_document:
         theme: cosmo
         toc: yes
