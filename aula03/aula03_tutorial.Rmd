@@ -36,19 +36,20 @@ Todo comando de git no terminal começa por `git` ;)
 Vamos inserir nome e o email para identificação: 
 
 Digite: 
-`git config user.name`   
-`git config user.email`   
+`git config --global user.name`   
+`git config --global user.email`   
 
-(Nada deve aparecer, se algo aparecer avisa o/)
+A primeira vez nada deve aparecer, se algo aparecer é porque já tinha sido rodado.
 
+Se não tiver resposta ou se houver algum erro no retorno, execute:  
 
-Agora:  
+`git config --global user.name [seu nome]`  
+`git config --global user.email [seu email do github!]`   
 
-`git config user.name "seu nome"`  
-`git config user.email "seu email do github!"`   
+ex. `git config --global user.name "Andrea Sánchez-Tapia"`
+ex. `git config --global user.email katori@gmail.com`
 
-ex. `git config user.name "Andrea Sánchez-Tapia"`
-
+As aspas no nome permitem que git entenda que o nome completo com espaços é o `user.name`.
 
 Na checagem, os dados inseridos devem aparecer,  digite de novo: 
 `git config user.name`   
@@ -57,31 +58,6 @@ Na checagem, os dados inseridos devem aparecer,  digite de novo:
 As variáveis que você inseriu devem aparecer
 
 __Até aqui git está configurado no computador e ele sabe quem é você.__
-
-
-##  Vamos conectar o computador com GitHub 
-
-Para isso, geramos uma chave de segurança que identifica o computador e copiamos ela no GitHub. 
-
-Esta chave é _para cada computador individual_. Você pode ter uma conta de GitHub só mas trabalhar em diferentes computadores, e cada um terá a própria chave. 
-
-### em RStudio: criar a chave RSA
-
-1. `Preferências > git/svn`
-1. Checar que git está apontando para um arquivo `git.exe` em windows, em mac e linux `/usr/bin/git`
-3. Se você nunca fez isto, não deve ter nada no campo da chave RSA
-4. Clique `Criar RSA Key`
-5. Ver a RSA Key, copiar a chave. Ela é uma chave que identifica seu computador e vamos copiá-la em GitHub.com
-
-### em GitHub: colar a chave RSA
-
-1. Log in
-2. __Perfil > Chaves ssh > criar uma chave ssh__
-4. Nome de seu computador
-5. Colar a chave que tinha sido copiada. 
-6. Add, OK. 
-
-__Até aqui github e seu computador podem se comunicar :D__
 
 # Criando um repositório de git e GitHub
 
@@ -105,7 +81,32 @@ __isto ainda não é um repositório de git:__
 
 3. Veja se há remotos para esta pasta: `git remote -v` Nada, não é?
 
-__Vamos adicionar um remoto criado no GitHub __
+__Vamos criar e adicionar um repositório remoto criado no GitHub __
+
+##  Vamos conectar o computador com GitHub 
+
+Para isso, geramos uma chave de segurança que identifica o computador e copiamos ela no GitHub. 
+
+Esta chave é _para cada computador individual_. Você pode ter uma conta de GitHub só mas trabalhar em diferentes computadores, e cada um terá a própria chave. 
+
+### em RStudio: criar a chave RSA
+
+1. Nas opções de RStudio, busque a opção `Preferências > git/svn`
+1. Checar que git está apontando para um arquivo `git.exe` em windows, em mac e linux `/usr/bin/git`
+3. Se você nunca fez isto, não deve ter nada no campo da chave RSA, clique `Criar RSA Key`. Se já tiver algo, passe para o passo seguinte.
+5. Veja a RSA Key, copie a chave. Ela é uma chave que identifica seu computador e vamos copiá-la em GitHub.com
+
+### em GitHub: colar a chave RSA
+
+1. Log in
+2. __Perfil > Chaves ssh > criar uma chave ssh__
+4. Nome de seu computador
+5. Colar a chave que tinha sido copiada. 
+6. Add, OK. 
+
+__Até aqui github e seu computador podem se comunicar :D__
+
+
 
 ## em GitHub
 
