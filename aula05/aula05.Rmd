@@ -1,0 +1,437 @@
+---
+title: "manipulação de dados"
+author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo Rocha"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+fontsize: 14pt
+output: 
+  beamer_presentation:
+    latex_engine: xelatex 
+    incremental: true
+    template:
+    
+header-includes:
+  - \usepackage{longtable,booktabs}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{xcolor}
+  - \usepackage{subfig}
+  - \usepackage{fontspec}
+  - \usefonttheme{professionalfonts} 
+  - \usefonttheme{serif} 
+  - \setmainfont{Roboto Condensed}
+  - \definecolor{cor1}{HTML}{A70000}
+  - \definecolor{cor2}{HTML}{1C1C19} 
+  - \definecolor{cor3}{HTML}{ff0000}
+  - \setbeamercolor{title}{fg = cor1}
+  - \setbeamercolor{frametitle}{fg = cor1}
+  - \setbeamercolor{structure}{fg = cor2}
+  - \renewcommand\alert[1]{\textcolor{cor3}{#1}}
+  - \setbeamertemplate{navigation symbols}{
+    {  \insertslidenavigationsymbol 
+    \insertframenavigationsymbol   
+    \insertsubsectionnavigationsymbol  
+    \insertsectionnavigationsymbol
+    \insertdocnavigationsymbol  
+    \insertbackfindforwardnavigationsymbol 
+    \hspace{1em}  
+    \usebeamerfont{footline} 
+    \insertframenumber/\inserttotalframenumber }
+    \setcounter{page}{1} 
+    \pagenumbering{arabic} }
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(size = "footnotesize")
+options(tinytex.verbose = TRUE)
+```
+
+## sobre a aula
+
+\Large
+\tableofcontents
+
+## 
+
+\section{1. dados de biodiversidade}
+
+
+## dados & conhecimento
+
+\center 
+\only<1>{\includegraphics[width = 9cm]{figs/Data-Wisdom.jpg}}
+\only<2>{\includegraphics[width = 9cm]{figs/DIKW-Pyramid.png}}
+
+## dados de biodiversidade
+\framesubtitle{museus \& herbários}
+
+\includegraphics[width=6cm]{figs/mz_ictio.jpg}
+\hfill
+\includegraphics[width=4cm]{figs/herbarioRB.jpg}
+
+## dados de biodiversidade
+\framesubtitle{amostragem}
+
+\center
+\includegraphics[width=4cm]{figs/peic.jpg}
+
+## componentes dos dados de biodiversidade
+
++ espécies (informação taxonômica)
++ atributos das espécies
++ localidades
++ ocorrências
++ variáveis: altura, peso... 
+
+## padronização de dados em biodiversidade 
+\framesubtitle{\href{https://dwc.tdwg.org/}{\underline{Darwin Core}}}
+
+\center 
+\only<1>{
+facilitar o compartilhamento da informação sobre diversidade biológica \\
+
+\vspace{1cm}
+
+\includegraphics[scale = .6]{figs/darwin.jpeg}}
+\only<2>{\includegraphics[scale = .3]{figs/dwc_scheme.png}}
+
+## 
+
+\section{2. bases de dados relacionais}
+
+## como funcionam as bases de dados relacionais
+
++ diferentes dados são organizados em diferentes tabelas
++ tabelas são integradas
++ identificador comum para cada tabela
++ em geral organizadas em \alert{SQL} (\emph{Structured Query Language})
+
+## como lidamos com dados relacionais
+
++ tipicamente análises de dados em diferentes tabelas
++ relações entre as tabelas são feitas aos pares
++ relações de três ou mais tabelas são sempre propriedades das relações de cada par
++ usamos \alert{verbos} para trabalhar com pares de tabelas
+
+## tipos de verbos
+
++ mutating
++ filtering
++ set operations
++ no R manipulação de bases pode ser feita dentro dos pacotes __base__ e __dplyr__
+
+## pacote __dplyr__
+
+\includegraphics[scale = .06]{figs/dplyr.png} construído a partir da lógica de bases relacionais
+
+\vspace{1cm}
+
++ mais fácil que SQL porque é voltado para análise de dados
++ \alert{gramática} para manipulação de dados
++ `mutate()`
++ `filter()`
+
+## estrutura de dados
+
+\center
+\includegraphics[scale = .5]{figs/dplyr2.png}
+
+## chaves
+
+\center
+\includegraphics[scale = .25]{figs/database_byhand.jpg}
+
+## chaves 
+
++ \alert{chave primária} $\rightarrow$ identifica uma observação em sua própria tabela
++ \alert{chave estrangeira} $\rightarrow$ identifica uma observação em uma outra tabela
++ uma variável pode ser uma chave primária em uma tabela e uma chave estrangeira em outra
++ toda chave primária deve conter uma informação única!
++ toda tabela deve ter uma chave primária
+
+## relação
+
+é dada pela \alert{chave primária} e sua respectiva \alert{chave estrangeira}
+
+\vspace{1cm}
+
++ 1-para-muitas
++ 1-para-1
++ usamos as chaves para combinar tabelas
++ usamos `merge()` (__base__) ou `join()` (__dplyr__) 
+
+## usando relações para juntar dados
+
+\center
+\includegraphics[scale = .4]{figs/join.png}
+
+## equivalências entre __dplyr__ e __base__
+
+\center
+\includegraphics[scale = .4]{figs/join_merge.png}
+
+##
+
+\section{3. manipulação de dados em R}
+
+## base de dados CESTES
+
+\includegraphics[scale = .35]{figs/cestesdatabase.png}
+
+\flushright 
+\href{https://doi.org/10.1038/s41597-019-0344-7}{Jeliazkov et al 2020 Sci Data}
+
+## dados e código aberto
+
+\center
+\only<1>{\includegraphics[scale =.45]{figs/cabecalho_cestes.png}}
+\only<2>{\includegraphics[scale =.45]{figs/setwdeca.png}}
+\only<3>{\framesubtitle{\href{https://www.tidyverse.org/blog/2017/12/workflow-vs-script/}{https://www.tidyverse.org/blog/2017/12/workflow-vs-script/}}
+\includegraphics[scale =.35]{figs/JennyBryan.png}
+\hfill 
+\includegraphics[scale =.15]{figs/jenny.jpg}}
+
+## um fluxo de trabalho no R
+
+começamos carregando os pacotes necessários
+
+```{r message = FALSE}
+library("reshape2")
+library("tidyverse")
+```
+
+
+## explorando os dados
+\framesubtitle{species vs. sites}
+
+\footnotesize
+```{r}
+files_path <- list.files("data", 
+                         pattern = ".csv", 
+                         full.names = TRUE)
+
+files_path
+
+files_path[3]
+```
+
+## lendo o dado no R
+\framesubtitle{criando objetos `data.frame`}
+
+```{r}
+comm <- read.csv(files_path[1])
+coord <- read.csv(files_path[2])
+envir <- read.csv(files_path[3])
+splist <- read.csv(files_path[4])
+traits <- read.csv(files_path[5])
+```
+
+## outra opção de leitura do dado
+\framesubtitle{criando objetos `list`}
+
+
+\footnotesize
+```{r}
+data <- sapply(files_path, read.csv)
+
+length(data)
+
+head(data[[4]])
+```
+
+## ainda outra opção usando um ciclo
+\framesubtitle{criando objetos `list`}
+
+```{r eval = FALSE}
+length(files_path)
+
+data <- list()
+
+for (i in 1:length(files_path)) {
+  data[[i]] <- read.csv(files_path[i])
+}
+```
+
+## inspecionando os dados da comunidade
+
+\footnotesize
+```{r}
+comm[1:6, 1:10]
+```
+
+## inspecionando os dados de atributos
+
+
+\footnotesize
+```{r}
+traits[1:9, 1:7]
+```
+
+## inspecionando os dados ambientais
+
+\footnotesize
+```{r}
+head(envir)
+```
+
+## inspecionando os dados de coordenadas
+
+```{r}
+head(coord)
+```
+
+## inspecionando os dados da lista de espécies
+
+\footnotesize
+```{r}
+head(splist)
+
+# quantas especies?
+nrow(splist)
+```
+
+## adicionando as coordenadas na planilha dos sites
+
+\footnotesize
+```{r}
+# info sobre coord
+names(coord)
+dim(coord)
+
+# info sobre envir
+names(envir)
+dim(envir)
+```
+
+## usando `merge` e uma coluna comum
+
+coluna comum é chave \alert{primária} e \alert{estrangeira}
+
+\vspace{1cm}
+
+```{r}
+envir.coord <- merge(x = envir, 
+                     y = coord, 
+                     by = "Sites")
+
+dim(envir.coord)
+```
+
+## checando o `merge`
+
+\footnotesize
+```{r}
+names(envir.coord)
+```
+
+## transformando a matriz espécie vs. area em tabela de dados
+
+\footnotesize
+```{r}
+comm[1:6, 1:10]
+```
+
+## usando o pacote **reshape**
+
+\footnotesize
+```{r}
+# transformando matriz em tabela de dado
+comm.df <- reshape2::melt(comm[, -1])
+
+# checando se funcionou
+head(comm.df)
+```
+
+## usando o pacote **reshape**
+
+\footnotesize
+```{r}
+# quantas vezes a especie se repete
+table(comm.df$variable)
+```
+
+## criando a variável "Sites"
+
+\footnotesize
+```{r}
+# quantas especies?
+n.sp <- nrow(splist)
+n.sp 
+
+# vetor contendo todos os Sites
+Sites <- envir$Sites
+length(Sites)
+
+comm.df$Sites <- rep(Sites, each = n.sp)
+```
+
+## checando se a primeira coluna foi criada
+
+```{r}
+head(comm.df)
+```
+
+## alterando o nome das colunas 
+
+\footnotesize
+```{r}
+names(comm.df)
+
+names(comm.df)[1:2] <- c("TaxCode", "Abundance")
+
+head(comm.df)
+```
+
+
+## usando os pacote **dplyr** e **tidyr**
+
+vamos adicionar uma coluna com o nome das espécies ao nosso objeto `comm.df`
+
+\footnotesize
+```{r eval = FALSE}
+comm.sp <- merge(x = comm.df, 
+                 y = splist[, c(1, 3)], 
+                 by = "TaxCode")
+```
+
+## usando os pacote **dplyr** e **tidyr**
+
+vamos adicionar uma coluna com o nome das espécies ao nosso objeto `comm.df`
+
+\footnotesize
+```{r}
+comm.sp <- inner_join(x = comm.df, 
+                      y = splist[, c(1, 3)])
+```
+
+## checando a nossa nova coluna
+
+\footnotesize
+```{r}
+head(comm.sp)
+```
+
+## usando o pacote **tidyr**
+
+\footnotesize
+```{r}
+comm.tidy <- tidyr::gather(comm[, -1])
+
+head(comm.tidy)
+
+dim(comm.tidy)
+```
+
+## juntando todas as variáveis em uma única tabela
+\framesubtitle{juntando `comm.sp`, com `envir.coord`}
+
+\footnotesize
+```{r}
+comm.envir <- inner_join(x = comm.sp, 
+                         y = envir.coord, 
+                         by = "Sites")
+
+dim(comm.sp)
+dim(envir.coord)
+dim(comm.envir)
+```
+
