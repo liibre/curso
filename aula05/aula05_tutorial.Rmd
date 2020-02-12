@@ -1,0 +1,322 @@
+---
+title: 'Introdução à manipulação de bases de dados relacionais'
+author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo S.B. Rocha"
+date: "`r Sys.Date()`"
+output: 
+    html_document:
+        theme: cosmo
+        toc: yes
+    md_document:
+        variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      results = "hide", 
+                      message = FALSE)
+```
+
+# Manipulando dados relacionais
+
+Vamos mexer em um banco de dados que é composto por cinco planilhas em formato .csv. Esses dados foram extraídos do artigo __A global database for metacommunity ecology, integrating species, traits, environment and space__ de Jeliazkov et al (2020). Estamos trabalhando especificamente com os dados de Pavoine et al (2011).  
+
+Começamos com salvando os cinco arquivos dentro do diretório `data`. Você deve terminar com a seguinte estrutura:
+
+```
+projeto
+├── data
+│   ├── comm.csv
+│   ├── coord.csv
+│   ├── envir.csv
+│   └── splist.csv
+│   └── traits.csv
+```
+# Iniciando um script
+
+Vamos começar criando um arquivo de script chamado `01_manipulacao_de_dados.R` que deverá ser salvo no diretório `R` da sua pasta com o projeto da disciplina. 
+
+O arquivo de script deve começar com um cabeçalho no nosso. Fique à vontade para modificar. Esta é apenas uma sugestão inicial. Escreva o que julgar importante. Use e abuse dos comentários ao longo do seu script.
+
+```{r}
+# Script para manipulação de dados em bases relacionais #
+# parte do curso Projetos de análise de dados em R
+# primeira versão em 2020-02-12
+#-------------------------------------------------------#
+```
+
+Já sabemos todos os pacotes que iremos utilizar nesta seção, então iremos carregar todos os pacotes no início do código.
+
+```{r}
+# carregando os pacotes necessários
+library("reshape2")
+library("dplyr")
+library("tidyr")
+```
+
+# Lendo os dados no R
+
+Os arquivos são todos em formato .csv, separados por vírgula. Por isso vamos usar a função `read.csv()`. Poderíamos também usar o `read.table()` com os argumentos `sep = ","` e `header = TRUE`
+
+Vamos então ler os cinco conjuntos de dados. Uma função muito útil para a leitura de dados é a `list.files()` do pacote **base**. Esta função lista os arquivos em um diretório, baseado em um padrão. Vamos usar essa função para listar todos os arquivos em .csv do diretório. Para entender melhor como a função funciona vamos começar entrando no na página de ajuda da função.
+
+```{r eval = FALSE}
+?list.files
+```
+
+Vamos aplicar a função para listar todos os arquivos do diretório `data` com a extensão `.csv`. 
+
+```{r}
+files.path <- list.files(path = "data", 
+                         pattern = ".csv", 
+                         full.names = TRUE)
+
+files.path
+```
+
+O objeto `files.path` é um vetor de cinco elementos (afinal são cinco arquivos) contendo o nome completo do arquivo. Vamos usar o conteúdo desse vetor na função `read.csv()`. Há maneiras mais automatizadas de fazer a mesma tarefa cinco vezes! No arquivo .pdf da aula tem dois exemplos usando `lapply` e `for` para ler todas as planilhas uma única vez. Por enquanto, faremos um a um usando `read.csv()`. 
+
+```{r}
+comm <- read.csv(files.path[1])
+coord <- read.csv(files.path[2])
+envir <- read.csv(files.path[3])
+splist <- read.csv(files.path[4])
+traits <- read.csv(files.path[5])
+```
+
+Vamos aplicar as funções `head()`, `dim()` e `summary()` para inspecionar todos os arquivos. Tente entender baseado no output e na página de ajuda (e.g.: `?head`) o que cada uma das funções retorna.
+
+## Entendendo o objeto `comm`
+
+```{r}
+head(comm)
+dim(comm)
+summary(comm)
+```
+
+## Entendendo o objeto `coord`
+
+```{r}
+head(coord)
+dim(coord)
+summary(coord)
+```
+
+## Entendendo o objeto `envir`
+
+```{r}
+head(envir)
+dim(envir)
+summary(envir)
+```
+
+## Entendendo o objeto `splist`
+
+```{r}
+head(splist)
+dim(splist)
+summary(splist)
+```
+
+## Entendendo o objeto `traits`
+
+```{r}
+head(traits)
+dim(traits)
+summary(traits)
+```
+
+# Sumário dos dados
+
+Temos dados de quantas espécies? Podemos simplesmente contar o número de linhas do objeto `splist`.
+
+```{r}
+nrow(splist)
+```
+
+Quantas áreas amostradas? Podemos contar o número de linhas dos objetos `comm` ou `envir`. 
+
+```{r}
+nrow(comm)
+nrow(envir)
+```
+
+Quantas variáveis ambientais?
+
+```{r}
+# todas as variáveis exceto a primeira coluna com o id
+names(envir)[-1]
+# contando quantas variáveis
+length(names(envir)[-1])
+```
+
+Qual a riqueza de cada área? Primeiro, precisamos transformar a nossa matriz que possui dados de abundância em uma matriz de presença e ausência. 
+
+```{r}
+comm.pa <- comm[, -1] > 0
+# vamos nomear as linhas das planilhas com o id dos sites
+row.names(comm.pa) <- envir$Sites
+```
+
+No R, os valores de `TRUE` e `FALSE` contam como 1 e 0. Vamos calcular a riqueza da área 1, por exemplo, somando a primeira linha do novo objeto `comm.pa`. 
+
+```{r}
+sum(comm.pa[1, ])
+```
+
+Como podemos fazer a soma de forma automatizada para as 97 áreas? Podemos usar a função `apply`. Essa função aplica uma função às linhas ou colunas de um objeto (do tipo `data.frame` ou `matrix`).
+
+```{r}
+rich <- apply(X = comm.pa, MARGIN = 1, FUN = sum)
+summary(rich)
+```
+
+Sabemos agora que a riqueza média das áreas é 6.3, o valor mínimo é 1 e o máximo, 15. 
+
+# Juntando diferentes tabelas por meio de identificadores comuns
+
+Vamos usar a função `merge()` do pacote __base__ para adicionar a coluna de coordenadas ao objeto contendo as variáveis ambientais. Esta função irá combinar duas planilhas por meio de um identificador comum, que é a chave primária. No caso do objeto `envir` a chave primária é a coluna `Sites` que contém a numeração das localidades amostradas. Podemos chamar essa coluna usando o operador `$`. 
+
+```{r}
+envir$Sites
+```
+
+São 97 áreas. Vamos ver o que acontece quando usamos a função `summary()`. 
+
+```{r}
+summary(envir$Sites)
+```
+
+## Transformando tipos de variáveis
+
+No R, a coluna `Sites` que representa uma variável categórica com o id de cada área está sendo entendida como uma variável numérica. Vamos converter essa coluna para um fator, dessa forma irá representar melhor o significado da variável que é simplesmente o id de cada área. Para isso, usamos a função `factor()`
+
+```{r}
+# se checarmos a classe desse vetor, veremos que é numerica
+class(envir$Sites)
+# queremos que seja uma variável categórica. Para isso, convertemos em fator
+as.factor(envir$Sites)
+# se usarmos apenas as.factor, não fazemos a conversão, vamos então fazer uma atribuição
+envir$Sites <- as.factor(envir$Sites)
+```
+
+Vamos fazer o mesmo para a variável `Sites` do objeto `coord`. 
+```{r}
+coord$Sites <- as.factor(coord$Sites)
+```
+
+## Juntando `coord` e `envir`
+
+Vamos então aplicar a função `merge`. 
+
+```{r}
+envir.coord <- merge(x = envir, 
+                     y = coord, 
+                     by = "Sites")
+```
+
+Podemos checar a junção com as funções `dim()` e `head()`. Quantas colunas deveríamos ter ao final? Quais colunas foram adicionadas?
+
+```{r}
+dim(envir)
+dim(coord)
+dim(envir.coord)
+head(envir.coord)
+```
+
+# Transformando uma matrix espécie vs. área em uma tabela de dados
+
+Agora, queremos transformar a nossa matriz de espécie vs. área em uma planilha que contenha cada __observação__ em uma __linha__ e cada __variável__ em uma __coluna__. Cada observação é a abundância de uma espécie em uma determinada área. Para fazer essa transformação iremos usar a função `melt()` do pacote __reshape2__. Como temos 97 sites e 56 espécies, terminaremos com um objeto com 5432 linhas (97 x 56). 
+
+```{r}
+# vetor contendo todos os Sites
+Sites <- envir$Sites
+length(Sites)
+
+# vetor número de espécies
+n.sp <- nrow(splist)
+n.sp 
+
+# criando tabela com cada especie em cada area especies em linhas 
+comm.df <- reshape2::melt(comm[, -1])
+```
+
+Vamos checar o cabeçalho e as dimensões do objeto. 
+
+```{r}
+dim(comm.df)
+head(comm.df)
+```
+
+Queremos alterar o nome das colunas de `comm.df`. Para isso, usaremos a função `colnames()`. 
+
+```{r}
+# nomes atuais
+colnames(comm.df)
+# modificando os nomes das colunas
+colnames(comm.df) <-  c("TaxCode", "Abundance")
+# checando os novos nomes
+colnames(comm.df)
+```
+
+Queremos agora adicionar a coluna `Sites` ao novo objeto. Vamos usar a função `rep()`. Esta função cria sequências. Vamos criar uma sequência de localidades, em que cada uma das 97 localidades se repete 56 vezes. A sequência deve ter também 5432 elementos.   
+
+```{r}
+# primeiro criamos a sequência
+seq.site <- rep(Sites, each = n.sp)
+# checando a dimensão
+length(seq.site)
+# adicionando ao objeto comm.df
+comm.df$Sites <- seq.site
+# checando como ficou
+head(comm.df)
+```
+
+# Juntando todas as variáveis à `comm.df` 
+
+Para terminar, vamos juntar  `splist`, `traits` e `envir.coord` à planilha `comm.df`. 
+
+Como vimos na aula, as relações entre duas tabelas são sempre feitas par a par. Então, vamos juntar par a par as tabelas usando a função `merge()`.
+
+## Tabela `comm.df` e `splist`
+
+Primeiro, vamos adicionar as informações das espécies contidas em `splist` à `comm.df` usando a coluna `TaxCode`. 
+
+```{r}
+comm.sp <- merge(comm.df, splist, by = "TaxCode")
+head(comm.sp)
+```
+
+## Tabela `comm.sp` e `traits`
+
+Segundo, adicionamos os dados de atributos das espécies à tabela de comunidade. Na tabela `traits`, a coluna que identifica as espécies é chamada `Sp`. Antes de fazer a junção, precisamos mudar o nome para bater com o nome da coluna em `comm.sp` que é `TaxCode`. 
+
+```{r}
+names(traits)
+# renomeando o primeiro elemento
+colnames(traits)[1] <- "TaxCode"
+```
+
+
+```{r}
+comm.traits <- merge(comm.sp, traits, by = "TaxCode")
+head(comm.traits)
+```
+
+## Tabela `comm.traits` e `envir.coord`
+
+Finalmente, juntamos as variáveis ambientais (que aqui já contém as coordenadas) à tabela geral da comunidade por meio da coluna `Sites`. 
+
+```{r}
+comm.total <- merge(comm.traits, envir.coord, by = "Sites")
+head(comm.total)
+```
+
+Por último, finalizamos nossa rotina de manipulação de dados exportando a planilha final modificada. Para isso, usamos a função `write.csv()`. 
+
+```{r}
+write.csv(x = comm.total, 
+          file = "data/01_data_format_combined.csv", 
+          row.names = FALSE)
+```
+
+Ao terminar, você deve adicionar ao git todos os arquivos .csv usados neste script, o script em si (`R/01_manipulacao_de_dados.R`) e o dado combinado que foi exportado ao final (`data/01_data_format_combined.csv`). Faça o commit e o push para o repositório remoto. Dia que acaba com um commit é um bom dia!
