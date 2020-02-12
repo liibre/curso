@@ -9,3 +9,5 @@
 _site
 # shit from libre office
 .~lock*
+# xaringan stuff
+*.css

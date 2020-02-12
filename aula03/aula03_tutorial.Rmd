@@ -83,7 +83,40 @@ __isto ainda não é um repositório de git:__
 
 __Vamos criar e adicionar um repositório remoto criado no GitHub __
 
+
+Lembre sempre de checar: 
+
+`git status`
+
+Neste momento a mensagem no terminal deveria ser: 
+
+
+`On branch master`  
+`No commits yet`  
+`Untracked files:...`  
+
+# Trabalhando no repo
+
+Vamos fazer uma modificação ao README.md, adicionar as mudanças (`add`), fazer commit (`commit`) e fazer push (`push`).
+
+1. Edite seu README.md de maneira interessante e significativa - 
+
+2. Adicione seu README.md: isto quer dizer que o git vai começar a monitorar este arquivo. 
+
+`git add README.md`
+
+__Faça sempre `git status` entre passos para entender o que está acontecendo __
+
+3. Vamos fazer o commit deste arquivo que foi adicionado. O commit exige que você escreva uma mensagem explicando porque você fez as mudanças: 
+
+`git commit -m "eu fiz as mudanças porque era bom"`
+
+`[master b9cdaf7] eu fiz as mudanças porque era bom`  
+`1 file changed, 1 insertion(+)`
+
 ##  Vamos conectar o computador com GitHub 
+
+__VOCÊ SÓ PRECISA FAZER ISTO UMA VEZ EM CADA COMPUTADOR__
 
 Para isso, geramos uma chave de segurança que identifica o computador e copiamos ela no GitHub. 
 
@@ -104,8 +137,7 @@ Esta chave é _para cada computador individual_. Você pode ter uma conta de Git
 5. Colar a chave que tinha sido copiada. 
 6. Add, OK. 
 
-__Até aqui github e seu computador podem se comunicar :D__
-
+__Até aqui github e seu computador podem se comunicar :D Esta configuração da chave só precisa ser feita uma vez em cada computador. O resto precisa ser rodado toda vez que você crie um repositório__
 
 
 ## em GitHub
@@ -147,36 +179,6 @@ A resposta deve ser algo similar a isto:
 `$ origin	git@github.com:AndreaSanchezTapia/blah.git (push)`
 
 __Até aqui você tem um remoto e um repositório local__
-
-Lembre sempre de checar: 
-
-`git status`
-
-Neste momento a mensagem no terminal deveria ser: 
-
-
-`On branch master`  
-`No commits yet`  
-`Untracked files:...`  
-
-# Trabalhando no repo
-
-Vamos fazer uma modificação ao README.md, adicionar as mudanças (`add`), fazer commit (`commit`) e fazer push (`push`).
-
-1. Edite seu README.md de maneira interessante e significativa
-
-2. Adicione seu README.md: isto quer dizer que o git vai começar a monitorar este arquivo. 
-
-`git add README.md`
-
-__Faça sempre `git status` entre passos para entender o que está acontecendo __
-
-3. Vamos fazer o commit deste arquivo que foi adicionado. O commit exige que você escreva uma mensagem explicando porque você fez as mudanças: 
-
-`git commit -m "eu fiz as mudanças porque era bom"`
-
-`[master b9cdaf7] eu fiz as mudanças porque era bom`  
-`1 file changed, 1 insertion(+)`
 
 4. Agora só falta você fazer push do _commit_ 
 
