@@ -205,11 +205,11 @@ library("tidyverse")
 
 \footnotesize
 ```{r}
-files_path <- list.files("data", 
+files.path <- list.files("data", 
                          pattern = ".csv", 
                          full.names = TRUE)
 
-files_path
+files.path
 
 files_path[3]
 ```
@@ -218,11 +218,11 @@ files_path[3]
 \framesubtitle{criando objetos `data.frame`}
 
 ```{r}
-comm <- read.csv(files_path[1])
-coord <- read.csv(files_path[2])
-envir <- read.csv(files_path[3])
-splist <- read.csv(files_path[4])
-traits <- read.csv(files_path[5])
+comm <- read.csv(files.path[1])
+coord <- read.csv(files.path[2])
+envir <- read.csv(files.path[3])
+splist <- read.csv(files.path[4])
+traits <- read.csv(files.path[5])
 ```
 
 ## outra opção de leitura do dado
@@ -231,7 +231,7 @@ traits <- read.csv(files_path[5])
 
 \footnotesize
 ```{r}
-data <- sapply(files_path, read.csv)
+data <- sapply(files.path, read.csv)
 
 length(data)
 
@@ -242,12 +242,12 @@ head(data[[4]])
 \framesubtitle{criando objetos `list`}
 
 ```{r eval = FALSE}
-length(files_path)
+length(files.path)
 
 data <- list()
 
-for (i in 1:length(files_path)) {
-  data[[i]] <- read.csv(files_path[i])
+for (i in 1:length(files.path)) {
+  data[[i]] <- read.csv(files.path[i])
 }
 ```
 

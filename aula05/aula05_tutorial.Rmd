@@ -20,17 +20,19 @@ knitr::opts_chunk$set(echo = TRUE,
 
 Vamos mexer em um banco de dados que é composto por cinco planilhas em formato .csv. Esses dados foram extraídos do artigo __A global database for metacommunity ecology, integrating species, traits, environment and space__ de Jeliazkov et al (2020). Estamos trabalhando especificamente com os dados de Pavoine et al (2011).  
 
-Começamos com salvando os cinco arquivos dentro do diretório `data`. Você deve terminar com a seguinte estrutura:
+Começamos com salvando os cinco arquivos dentro do diretório `cestes` em `data`. Você deve terminar com a seguinte estrutura:
 
 ```
-projeto
-├── data
-│   ├── comm.csv
-│   ├── coord.csv
-│   ├── envir.csv
-│   └── splist.csv
-│   └── traits.csv
+projeto/
+├── data/
+    ├── cestes/
+       ├── comm.csv
+       ├── coord.csv
+       ├── envir.csv
+       └── splist.csv
+       └── traits.csv
 ```
+
 # Iniciando um script
 
 Vamos começar criando um arquivo de script chamado `01_manipulacao_de_dados.R` que deverá ser salvo no diretório `R` da sua pasta com o projeto da disciplina. 
@@ -38,20 +40,21 @@ Vamos começar criando um arquivo de script chamado `01_manipulacao_de_dados.R` 
 O arquivo de script deve começar com um cabeçalho no nosso. Fique à vontade para modificar. Esta é apenas uma sugestão inicial. Escreva o que julgar importante. Use e abuse dos comentários ao longo do seu script.
 
 ```{r}
-# Script para manipulação de dados em bases relacionais #
+# Script para manipulação de dados em bases relacionais ---#
 # parte do curso Projetos de análise de dados em R
+# dados originais extraídos de Jeliazkov et al 2020 Sci Data
+# (https://doi.org/10.1038/s41597-019-0344-7)
 # primeira versão em 2020-02-12
-#-------------------------------------------------------#
+#-----------------------------------------------------------#
 ```
 
 Já sabemos todos os pacotes que iremos utilizar nesta seção, então iremos carregar todos os pacotes no início do código.
 
 ```{r}
 # carregando os pacotes necessários
-library("reshape2")
-library("dplyr")
 library("tidyr")
 ```
+
 
 # Lendo os dados no R
 
@@ -66,7 +69,7 @@ Vamos então ler os cinco conjuntos de dados. Uma função muito útil para a le
 Vamos aplicar a função para listar todos os arquivos do diretório `data` com a extensão `.csv`. 
 
 ```{r}
-files.path <- list.files(path = "data", 
+files.path <- list.files(path = "data/cestes", 
                          pattern = ".csv", 
                          full.names = TRUE)
 
@@ -225,7 +228,7 @@ head(envir.coord)
 
 # Transformando uma matrix espécie vs. área em uma tabela de dados
 
-Agora, queremos transformar a nossa matriz de espécie vs. área em uma planilha que contenha cada __observação__ em uma __linha__ e cada __variável__ em uma __coluna__. Cada observação é a abundância de uma espécie em uma determinada área. Para fazer essa transformação iremos usar a função `melt()` do pacote __reshape2__. Como temos 97 sites e 56 espécies, terminaremos com um objeto com 5432 linhas (97 x 56). 
+Agora, queremos transformar a nossa matriz de espécie vs. área em uma planilha que contenha cada __observação__ em uma __linha__ e cada __variável__ em uma __coluna__. Cada observação é a abundância de uma espécie em uma determinada área. Para fazer essa transformação iremos usar a função `gather()` do pacote __tidyr__. Como temos 97 sites e 56 espécies, terminaremos com um objeto com 5432 linhas (97 x 56). 
 
 ```{r}
 # vetor contendo todos os Sites
@@ -237,7 +240,7 @@ n.sp <- nrow(splist)
 n.sp 
 
 # criando tabela com cada especie em cada area especies em linhas 
-comm.df <- reshape2::melt(comm[, -1])
+comm.df <- tidyr::gather(comm[, -1])
 ```
 
 Vamos checar o cabeçalho e as dimensões do objeto. 
@@ -262,7 +265,7 @@ Queremos agora adicionar a coluna `Sites` ao novo objeto. Vamos usar a função 
 
 ```{r}
 # primeiro criamos a sequência
-seq.site <- rep(Sites, each = n.sp)
+seq.site <- rep(Sites, times = n.sp)
 # checando a dimensão
 length(seq.site)
 # adicionando ao objeto comm.df
@@ -319,4 +322,4 @@ write.csv(x = comm.total,
           row.names = FALSE)
 ```
 
-Ao terminar, você deve adicionar ao git todos os arquivos .csv usados neste script, o script em si (`R/01_manipulacao_de_dados.R`) e o dado combinado que foi exportado ao final (`data/01_data_format_combined.csv`). Faça o commit e o push para o repositório remoto. Dia que acaba com um commit é um bom dia!
+Ao terminar, você deve adicionar ao git todos os arquivos .csv usados neste script que estão na pasta `cestes/`, o script em si (`R/01_manipulacao_de_dados.R`) e o dado combinado que foi exportado ao final (`data/01_data_format_combined.csv`). Faça o commit e o push para o repositório remoto. Dia que acaba com um commit é um bom dia!

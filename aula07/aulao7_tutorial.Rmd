@@ -1,0 +1,212 @@
+---
+title: 'Tutorial aula 07: Criando e salvando gráficos no R'
+author: "Sara Mortara, Andrea Sánchez-Tapia & Diogo S. B. Rocha"
+date: "18.07.2019"
+output: 
+    html_document:
+        theme: cosmo
+        toc: yes
+---
+
+# Funções básicas para gráficos no R base e ggplot2:
+
+
+Vocês já viram isto ontem, mas vamos retomar as funções básicas de gráficos no R e seu equivalente no ggplot2. 
+
+Funções gráficas no R base e no ggplot2: 
+
+
+Tipo de gráfico | R base | ggplot2 |
+----------|------------|-----------|
+barras | barplot() | geom_bar() |
+histogram | histogram() | geom_histogram() |
+densidade | plot(density()) | geom_density() |
+quantil-quantil |	qqnorm()	| geom_qq() |
+box-plot | boxplot() | geom_boxplot() |
+dispersão | plot() | geom_point() |
+
+Nesta aula vamos explorar os gráficos de dispersão, o queridinho box-plot e uma opção de gráfico de pontos com medidas de erro. 
+
+## Gráfico de dispersão
+
+### `plot` com `abline` do modelo de regressão
+Carregue o arquivo contendo dados de salário de homens e mulheres em empresas de tecnologia que está no diretório da aula de hoje data/salario.csv. Salve o arquivo em sua pasta /data e vamos reproduzir o gráfico da aula. 
+
+```{r }
+# lendo os dados
+sal <- read.csv("data/salarios.csv")
+# explore os dados com as funções head e summary
+# criando objetos para auxiliar a construção do gráfico
+# criando modelos lineares
+mh <- lm(salario ~ experiencia, data=sal[sal$sexo=="H",])
+mm <- lm(salario ~ experiencia, data=sal[sal$sexo=="M",])
+coefh <- coef(mh)
+coefm <- coef(mm)
+# definindo os limites dos eixos
+limy <- c(min(sal$salario),max(sal$salario))
+limx <- c(min(sal$experiencia),max(sal$experiencia))
+## definindo os nomes dos eixos
+labx <- "Experiência (anos)"
+laby <- "Salário (R$)"
+```
+
+Agora vamos construir o gráfico em si. 
+
+
+```{r, fig.show='hide' }
+# define parametros graficos
+par(mfrow=c(1,2), las=1, bty="l") # aqui estamos usando las e bty dentro do par para fixar para todas as janelas
+# plot dos valores de salario dos homens
+plot(salario ~ experiencia, data=sal[sal$sexo=="H",], 
+     col="tomato",
+     ylim=limy, xlim=limx,
+     ylab=laby, xlab=labx)
+# linha do previsto pelo modelo
+## a + b*x 
+abline(a=coefh[1], b=coefh[2],
+       col='tomato', lwd=2)
+mtext("A", 3, adj=0, font=2)
+## plot do salario das mulheres
+plot(salario ~ experiencia, data=sal[sal$sexo=="M",], 
+     col="navy",
+     ylim=limy, xlim=limx,
+     ylab="", xlab=labx)
+mtext("B", 3, adj=0, font=2)
+# linha do previsto pelo modelo
+## a + b*x 
+abline(a=coefm[1], b=coefm[2],
+       col='navy', lwd=2)
+
+```
+
+### Exportando o gráfico com as funções `png()` e `dev.off()`
+
+Queremos exportar esse gráfico. Para isso, primeiro crie um diretório /figs em seu repositório. Para exportar o gráfico vamos usar a função png, especificando a resolução e dimensões da figura. Quando criamos gráficos com a função `png` o que fazemos é: 
+
+1. anunciar qual extensão e arquivo vamos plotar o gráfico com a função `png()`
+
+2. determinar a sequência de comandos que cria o gráfico
+
+3. finalizar a construção do arquivo com a função `dev.off()`
+
+
+```{r , message=FALSE}
+# a funcao png cria o arquivo, daqui pra frente você não vai mais ver o gráfico
+png("figs/figura01.png", res=300, width=2400, height=1200)
+# define parametros graficos
+par(mfrow=c(1,2), las=1, bty="l") # aqui estamos usando las e bty dentro do par para fixar para todas as janelas
+# plot dos valores de salario dos homens
+plot(salario ~ experiencia, data=sal[sal$sexo=="H",], 
+     col="tomato",
+     ylim=limy, xlim=limx,
+     ylab=laby, xlab=labx)
+# linha do previsto pelo modelo
+## a + b*x 
+abline(a=coefh[1], b=coefh[2],
+       col='tomato', lwd=2)
+mtext("A", 3, adj=0, font=2)
+## plot do salario das mulheres
+plot(salario ~ experiencia, data=sal[sal$sexo=="M",], 
+     col="navy",
+     ylim=limy, xlim=limx,
+     ylab="", xlab=labx)
+mtext("B", 3, adj=0, font=2)
+# linha do previsto pelo modelo
+## a + b*x 
+abline(a=coefm[1], b=coefm[2],
+       col='navy', lwd=2)
+# para finalizar o gráfico e gerar o arquivo, precisamos rodar o dev.off()
+dev.off()
+
+```
+
+### Usando a função `legend()` em gráficos de dispersão
+
+Vamos fazer o mesmo gráfico anterior, mas agora com todos os pontos em uma mesma janela gráfica. Agora, vamos usar a função `legend()` para diferenciar os pontos. 
+
+```{r, fig.show='hide'}
+# plot dos valores de salario dos homens
+plot(salario ~ experiencia, data=sal[sal$sexo=="H",], 
+     col="tomato",
+     ylim=limy, xlim=limx,
+     ylab=laby, xlab=labx)
+# linha do previsto pelo modelo
+## a + b*x 
+abline(a=coefh[1], b=coefh[2],
+       col='tomato', lwd=2)
+## usando points para adicionar os pontos do salario das mulheres
+points(salario ~ experiencia, data=sal[sal$sexo=="M",], 
+       col="navy")
+# linha do previsto pelo modelo das mulheres
+## a + b*x 
+abline(a=coefm[1], b=coefm[2],
+       col='navy', lwd=2)
+# incluindo a legenda
+legend("topleft", legend=c("homens", "mulheres"),
+       col=c("tomato", "navy"),
+       lty=1, bty='n')
+```
+
+## Box-plot
+
+Vamos voltar à construção de box-plots. Desta vez vamos construir box-plots para cada espécie e variável com cada espécie de uma cor. A paleta de cores aqui utilizada é inspirada no filme [Life Aquatic](https://en.wikipedia.org/wiki/The_Life_Aquatic_with_Steve_Zissou) do diretor [Wes Anderson](https://en.wikipedia.org/wiki/Wes_Anderson) e foi gerada no pacote de R [wesanderson](https://github.com/karthik/wesanderson). 
+
+### Usando o argumento `font`
+
+E se quisermos colocar o nome das espécies em *itálico* no eixo? Isto é possível com o argumento `font` da função `axis`. As funções `text` e `mtext` também tem a opção `font`. Vamos ver como isto fica.  
+
+```{r }
+# criando vetor de cores
+cores <- c("#3B9AB2", "#EBCC2A", "#F21A00")
+# criando vetor com o nome das espécies
+sp <- paste("I.", unique(iris$Species), sep=" ")
+```
+
+
+```{r, fig.show='hide'}
+par(mfrow=c(2,2), bty='l', las=1)
+boxplot(Sepal.Length ~ Species, data=iris, xlab="", col=cores,
+        xaxt="n")
+axis(1, at=1:3, labels=sp, font=3)
+boxplot(Sepal.Width ~ Species, data=iris, xlab="", col=cores, 
+         xaxt="n")
+axis(1, at=1:3, labels=sp, font=3)
+boxplot(Petal.Length ~ Species, data=iris,  col=cores,
+         xaxt="n")
+axis(1, at=1:3, labels=sp, font=3)
+boxplot(Petal.Width ~ Species, data=iris, col=cores,
+         xaxt="n")
+axis(1, at=1:3, labels=sp, font=3)
+par(mfrow=c(1,1))
+
+```
+
+## Gráfico de média com desvio padrão com `arrows`
+
+Vamos criar um `data.frame` com a média e desvio padrão de cinco variáveis. Atenção: estamos usando a função `set.seed` para que os valores gerados com a função `sample` sejam iguais para todxs os computadores.
+
+```{r }
+# fixando uma semente de numeros aleatorios para manter o mesmo resultado no sample
+set.seed(42)
+# criando um data frame com valores medios e desvio padrão de uma variável
+d2 <- data.frame(name=letters[1:5],
+                 value=sample(seq(4,15),5),
+                 sd=c(1,0.2,3,2,4))
+
+```
+
+Agora vamos: 
+
+1. Fazer o plot dos pontos
+2. Adicionar a configuração do eixo x na mão com a função `axis`
+3. Adicionar os valores de desvio padrão em torno da média com a função `arrows`
+
+```{r, fig.show='hide'}
+plot(x=1:5, d2$value, las=1, bty='l', ylim=c(0, 18), pch=19, xaxt='n',
+     xlab="names", ylab="value")
+axis(1, at=1:5, labels=d2$name)
+arrows(x0=1:5,
+         y0=d2$value+d2$sd,
+         y1=d2$value-d2$sd, angle=90, length=0.05, code=3)
+
+```
