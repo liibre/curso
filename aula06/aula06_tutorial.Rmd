@@ -1,5 +1,5 @@
 ---
-title: 'Tutorial aula 06: Análise Exploratória de Dados'
+title: 'Tutorial de Análise Exploratória de Dados'
 author: "Sara Mortara, Andrea Sánchez-Tapia & Diogo S. B. Rocha"
 date: "`r format(Sys.time(), '%d %b %Y')`"
 output: 
