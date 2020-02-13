@@ -12,15 +12,13 @@ header-includes:
   - \usepackage{float}
   - \usepackage{xcolor}
   - \usepackage{subfig}
-  - \definecolor{cor1}{HTML}{E1BD6D}
-  - \definecolor{cor2}{HTML}{EABE94}
-  - \definecolor{cor3}{HTML}{0B775E}
-  - \definecolor{cor4}{HTML}{35274A}
-  - \definecolor{cor5}{HTML}{F2300F}
-  - \setbeamercolor{title}{fg=cor3}
-  - \setbeamercolor{frametitle}{fg=cor4}
-  - \setbeamercolor{structure}{fg=cor5}
-  - \renewcommand\alert[1]{\textcolor{cor5}{#1}}
+  - \definecolor{cor1}{HTML}{A70000}
+  - \definecolor{cor2}{HTML}{1C1C19}
+  - \definecolor{cor3}{HTML}{ff0000}
+  - \setbeamercolor{title}{fg=cor1}
+  - \setbeamercolor{frametitle}{fg=cor1}
+  - \setbeamercolor{structure}{fg=cor2}
+  - \renewcommand\alert[1]{\textcolor{cor3}{#1}}
 ---
 
 
@@ -52,7 +50,7 @@ library(plotrix)
 ```
 
 ```{r bad-graphics, echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
-d <- read.table(text=' x   y     z
+d <- read.table(text = ' x   y     z
 t1   5   high
 t1   2   low
 t1   4   med
@@ -61,7 +59,7 @@ t2   1   low
 t2   3   med
 t3  50   high
 t3  12   med
-t3  35   low', header=TRUE)
+t3  35   low', header = TRUE)
 
 levels(d$z) <- c("high", "med", "low")
 
@@ -278,7 +276,7 @@ abline(lm(log(Volume) ~ log(Girth), data=trees))
 \pause \item moderar na quantidade de cores e de tinta
 \pause \item sempre que possível apresentar medida de erro
 \pause \item ordem dos elementos importa
-\pause \item `las=1` importa muito mais
+\pause \item \texttt{las = 1} importa muito mais
 
 \end{enumerate}
 
@@ -298,7 +296,7 @@ alunxs
 ## gráfico de barras padrão
 
 ```{r }
-barplot(perc ~ nivel, data=alunxs)
+barplot(perc ~ nivel, data = alunxs)
 ```
 
 ## como mudar a ordem das barras?
@@ -306,9 +304,9 @@ barplot(perc ~ nivel, data=alunxs)
 
 ```{r }
 alunxs$nivel <- factor(alunxs$nivel,
-                       levels= c("iniciante",
-                                 "intermediário",
-                                 "experiente"))
+                       levels = c("iniciante",
+                                  "intermediário",
+                                  "experiente"))
 alunxs$nivel
 
 ```
@@ -317,7 +315,7 @@ alunxs$nivel
 
 ```{r }
 # agora vamos refazer o gráfico
-barplot(perc ~ nivel, data=alunxs)
+barplot(perc ~ nivel, data = alunxs)
 ```
 
 ## deixando o rótulo do eixo y na vertical
@@ -325,8 +323,7 @@ barplot(perc ~ nivel, data=alunxs)
 
 ```{r, fig.show='hide'}
 # las=1
-barplot(perc ~ nivel, data=alunxs,
-        las=1)
+barplot(perc ~ nivel, data = alunxs, las = 1)
 ```
 
 
@@ -335,8 +332,8 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, echo=FALSE}
 # las=1
-barplot(perc ~ nivel, data=alunxs,
-        las=1)
+barplot(perc ~ nivel, data = alunxs,
+        las = 1)
 ```
 
 
@@ -345,10 +342,10 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, fig.show='hide' }
 # usando xlab e ylab
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs")
+barplot(perc ~ nivel, data = alunxs, 
+        las = 1, 
+        xlab = "Nível de conhecimento em R", 
+        ylab = "Porcentagem (%) de alunxs")
 ```
 
 ## mudando o rótulo dos eixos
@@ -356,10 +353,10 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, echo=FALSE}
 # usando xlab e ylab
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs")
+barplot(perc ~ nivel, data = alunxs, 
+        las = 1, 
+        xlab = "Nível de conhecimento em R", 
+        ylab = "Porcentagem (%) de alunxs")
 ```
 
 
@@ -368,11 +365,11 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, fig.show='hide'}
 # argumento col
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col=1)
+barplot(perc ~ nivel, data = alunxs, 
+        las = 1, 
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = 1)
 ```
 
 
@@ -381,11 +378,11 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, echo=FALSE}
 # argumento col
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col=1)
+barplot(perc ~ nivel, data = alunxs,
+        las = 1,
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = 1)
 ```
 
 
@@ -394,11 +391,11 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, fig.show='hide'}
 # argumento col
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col='black')
+barplot(perc ~ nivel, data = alunxs, 
+        las = 1, 
+        xlab = "Nível de conhecimento em R", 
+        ylab = "Porcentagem (%) de alunxs", 
+        col = 'black')
 ```
 
 ## incluindo cor pelo nome
@@ -406,22 +403,22 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, echo=FALSE}
 # argumento col
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col='black')
+barplot(perc ~ nivel, data = alunxs, 
+        las = 1, 
+        xlab = "Nível de conhecimento em R", 
+        ylab = "Porcentagem (%) de alunxs", 
+        col = 'black')
 ```
 
 ## incluindo cor pelo código hexadecimal
 
 ```{r, fig.show='hide'}
 # argumento col
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col="#000000")
+barplot(perc ~ nivel, data = alunxs, 
+        las = 1, 
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = "#000000")
 ```
 
 
@@ -429,54 +426,54 @@ barplot(perc ~ nivel, data=alunxs,
 
 ```{r, echo=FALSE}
 # argumento col
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col="#000000")
+barplot(perc ~ nivel, data = alunxs,
+        las = 1, 
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = "#000000")
 ```
 
 ## incluindo cor pelo código RGB
 
 ```{r, fig.show='hide'}
 # funcao rgb
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col=rgb(0, 0, 0, maxColorValue=255))
+barplot(perc ~ nivel, data = alunxs,
+        las = 1, 
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = rgb(0, 0, 0, maxColorValue = 255))
 ```
 
 ## incluindo cor pelo código RGB
 
 ```{r, echo=FALSE}
 # 
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col=rgb(0, 0, 0, maxColorValue=255))
+barplot(perc ~ nivel, data = alunxs,
+        las = 1,
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = rgb(0, 0, 0, maxColorValue = 255))
 ```
 
 ## precisa de cor?
 
 ```{r, echo=FALSE}
 # uma barra de cada cor
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs",
-        col=c("red", "blue", "green"))
+barplot(perc ~ nivel, data = alunxs,
+        las = 1,
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs",
+        col = c("red", "blue", "green"))
 ```
 
 ## precisa de cor?
 
 ```{r, echo=FALSE}
 # voltando ao padrão de cores original
-barplot(perc ~ nivel, data=alunxs,
-        las=1,
-        xlab="Nível de conhecimento em R",
-        ylab="Porcentagem (%) de alunxs")
+barplot(perc ~ nivel, data = alunxs,
+        las = 1,
+        xlab = "Nível de conhecimento em R",
+        ylab = "Porcentagem (%) de alunxs")
 ```
 
 ## gráfico de barras com subcategorias
@@ -503,22 +500,23 @@ barplot(Freq ~ Class + Survived, data = d.Titanic,
 ## gráfico de barras em "mosaico"
 
 ```{r, fig.show='hide'}
-     # Corresponding table :
-     xt <- xtabs(Freq ~ Survived + Class + Sex,
-                 d.Titanic,
-                 subset = Age=="Adult")
-     # Alternatively, a mosaic plot :
-     mosaicplot(xt[,,"Male"], main="", color=TRUE)
+# Corresponding table :
+xt <- xtabs(Freq ~ Survived + Class + Sex,
+            d.Titanic,
+            subset = Age == "Adult")
+# Alternatively, a mosaic plot:
+mosaicplot(xt[, , "Male"], main = "", color = TRUE)
 ```
 
 
 ## gráfico de barras em "mosaico"
 
 ```{r, echo=FALSE}
-     # Corresponding table :
-     xt <- xtabs(Freq ~ Survived + Class + Sex, d.Titanic, subset = Age=="Adult")
-     # Alternatively, a mosaic plot :
-     mosaicplot(xt[,,"Male"], main="", color=TRUE)
+# Corresponding table :
+xt <- xtabs(Freq ~ Survived + Class + Sex, d.Titanic, 
+            subset = Age == "Adult")
+# Alternatively, a mosaic plot :
+mosaicplot(xt[, , "Male"], main = "", color = TRUE)
 ```
 
 ## gráfico de dispersão
@@ -526,7 +524,7 @@ barplot(Freq ~ Class + Survived, data = d.Titanic,
 ```{r, fig.show='hide'}
 m1 <- lm(log(dist) ~ log(speed), data = cars)
 plot(log(dist) ~ log(speed), data = cars,
-     las=1, bty='l', pch=19)
+     las = 1, bty = 'l', pch = 19)
 abline(m1)
 ```
 
@@ -534,7 +532,7 @@ abline(m1)
 
 ```{r, echo=FALSE, fig.height=4, fig.width=4}
 plot(log(dist) ~ log(speed), data = cars,
-     las=1, bty='l', pch=19)
+     las = 1, bty = 'l', pch = 19)
 abline(m1)
 ```
 
@@ -542,11 +540,11 @@ abline(m1)
 
 
 ```{r, echo=FALSE, fig.height=4, fig.width=4}
-mycol <- rgb(0, 0, 0, maxColorValue=255, alpha=125)
+mycol <- rgb(0, 0, 0, maxColorValue = 255, alpha = 125)
 m1 <- lm(log(dist) ~ log(speed), data = cars)
 plot(log(dist) ~ log(speed), data = cars,
-     las=1, bty='l', pch=19,
-     col=mycol)
+     las = 1, bty = 'l', pch = 19, 
+     col = mycol)
 abline(m1)
 ```
 
@@ -557,10 +555,10 @@ library(png)
 library(grid)
 pic <- readPNG("figs/car.png")
 plot(log(dist) ~ log(speed), data = cars,
-     las=1, bty='l', pch=19,
-     col=mycol)
+     las = 1, bty = 'l', pch = 19, 
+     col = mycol)
 abline(m1)
-grid.raster(pic, .25, .83, width=.2)
+grid.raster(pic, .25, .83, width = .2)
 
 ```
 
@@ -569,34 +567,33 @@ grid.raster(pic, .25, .83, width=.2)
 
 ```{r, echo=FALSE, fig.height=4, fig.width=4}
 plot(log(dist) ~ log(speed), data = cars,
-     las=1, bty='l', pch=19,
-     col=mycol)
+     las = 1, bty = 'l', pch = 19, 
+     col = mycol)
 abline(m1)
-grid.raster(pic, .31, .73, width=.15) 
+grid.raster(pic, .31, .73, width = .15) 
 
 ```
 
 ## gráficos com múltiplas janelas
 
+\footnotesize
 
-```{r, fig.show=FALSE}
-x <- log(cars$speed)
-y <- log(cars$dist)
-zones <- matrix(c(2,0,1,3), ncol=2, byrow=TRUE)
-layout(zones, widths=c(4/5, 1/5), heights=c(1/5, 4/5))
-xhist <- hist(x, plot=FALSE)
-yhist <- hist(y, plot=FALSE)
+```{r, eval = F, fig.show=FALSE}
+x <- log(cars$speed); y <- log(cars$dist)
+zones <- matrix(c(2, 0, 1, 3), ncol = 2, byrow = TRUE)
+layout(zones, widths = c(4/5, 1/5), heights = c(1/5, 4/5))
+xhist <- hist(x, plot = FALSE); yhist <- hist(y, plot = FALSE)
 top <- max(c(xhist$counts, yhist$counts))
-plot(x,y, las=1, xlab="log(speed)", ylab="log(dist)",
-     col=mycol, bty='l', pch=19)
+plot(x, y, las = 1, xlab = "log(speed)", 
+     ylab = "log(dist)", col = mycol, bty = 'l', pch = 19)
 abline(m1)
-grid.raster(pic, .16, .63, width=.15)
-par(mar=c(0,3,1,1))
-barplot(xhist$counts, axes=FALSE, ylim=c(0, top),
-        space=0, col=mycol)
-par(mar=c(3,0,1,1))
-barplot(yhist$counts, axes=FALSE, xlim=c(0, top),
-        space=0, horiz=TRUE, col=mycol)
+grid.raster(pic, .16, .63, width = .15)
+par(mar = c(0, 3, 1, 1))
+barplot(xhist$counts, axes = FALSE, ylim = c(0, top), 
+        space = 0, col = mycol)
+par(mar = c(3, 0, 1, 1))
+barplot(yhist$counts, axes = FALSE, xlim = c(0, top), 
+        space = 0, horiz = TRUE, col = mycol)
 
 ```
 
@@ -604,24 +601,24 @@ barplot(yhist$counts, axes=FALSE, xlim=c(0, top),
 ## gráficos com múltiplas janelas
 
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 x <- log(cars$speed)
 y <- log(cars$dist)
-zones <- matrix(c(2,0,1,3), ncol=2, byrow=TRUE)
-layout(zones, widths=c(4/5, 1/5), heights=c(1/5, 4/5))
-xhist <- hist(x, plot=FALSE)
-yhist <- hist(y, plot=FALSE)
+zones <- matrix(c(2, 0, 1, 3), ncol = 2, byrow = TRUE)
+layout(zones, widths = c(4 / 5, 1 / 5), heights = c(1 / 5, 4 / 5))
+xhist <- hist(x, plot = FALSE)
+yhist <- hist(y, plot = FALSE)
 top <- max(c(xhist$counts, yhist$counts))
-plot(x,y, las=1, xlab="log(speed)", ylab="log(dist)",
-     col=mycol, bty='l', pch=19)
+plot(x, y, las = 1, xlab = "log(speed)", ylab = "log(dist)", 
+     col = mycol, bty = 'l', pch = 19)
 abline(m1)
-grid.raster(pic, .16, .63, width=.15)
-par(mar=c(0,3,1,1))
-barplot(xhist$counts, axes=FALSE, ylim=c(0, top),
-        space=0, col=mycol)
-par(mar=c(3,0,1,1))
-barplot(yhist$counts, axes=FALSE, xlim=c(0, top),
-        space=0, horiz=TRUE, col=mycol)
+grid.raster(pic, .16, .63, width = .15)
+par(mar = c(0, 3, 1, 1))
+barplot(xhist$counts, axes = FALSE, ylim = c(0, top), 
+        space = 0, col = mycol)
+par(mar = c(3, 0, 1, 1))
+barplot(yhist$counts, axes = FALSE, xlim = c(0, top), 
+        space = 0, horiz = TRUE, col = mycol)
 #par(oma=c(3,3,0,0))
 #mtext("log(speed)", 1,outer=FALSE)
 #mtext("log(dist)", 2,outer=TRUE)
@@ -629,13 +626,14 @@ barplot(yhist$counts, axes=FALSE, xlim=c(0, top),
 
 ## mais gráficos com múltiplas janelas
 
+\footnotesize
 
 ```{r }
 sal <- read.csv("data/salarios.csv")
 head(sal)
 # criando modelos lineares
-mh <- lm(salario ~ experiencia, data=sal[sal$sexo=="H",])
-mm <- lm(salario ~ experiencia, data=sal[sal$sexo=="M",])
+mh <- lm(salario ~ experiencia, data = sal[sal$sexo == "H",])
+mm <- lm(salario ~ experiencia, data = sal[sal$sexo == "M",])
 coefh <- coef(mh)
 coefm <- coef(mm)
 # definindo os limites dos eixos
@@ -653,26 +651,27 @@ laby <- "Salário (R$)"
 \footnotesize
 ```{r, fig.show="hide", echo=TRUE}
 # define parametros graficos
-par(mfrow=c(1,2), las=1, bty="l")
+par(mfrow = c(1, 2), las = 1, bty = "l")
 # plot dos valores de salario dos homens
-plot(salario ~ experiencia, data=sal[sal$sexo=="H",], 
-     col="tomato",
-     ylim=limy, xlim=limx,
-     ylab=laby, xlab=labx)
+plot(salario ~ experiencia, 
+     data = sal[sal$sexo == "H",], 
+     col = "tomato",
+     ylim = limy, xlim = limx, 
+     ylab = laby, xlab = labx)
 # linha do previsto pelo modelo a + bx
-abline(a=coefh[1], b=coefh[2],
-       col='tomato', lwd=2)
-mtext("A", 3, adj=0, font=2)
-grid.raster(readPNG("figs/male.png"), .16, .75, width=.10)
+abline(a = coefh[1], b = coefh[2],
+       col = 'tomato', lwd = 2)
+mtext("A", 3, adj = 0, font = 2)
+grid.raster(readPNG("figs/male.png"), .16, .75, width = .10)
 ## plot do salario das mulheres
-plot(salario ~ experiencia, data=sal[sal$sexo=="M",], 
-     col="navy",
-     ylim=limy, xlim=limx,
-     ylab="", xlab=labx)
-mtext("B", 3, adj=0, font=2)
-grid.raster(readPNG("figs/female.png"), .66, .75, width=.08)
-abline(a=coefm[1], b=coefm[2],
-       col='navy', lwd=2)
+plot(salario ~ experiencia, data = sal[sal$sexo == "M", ], 
+     col = "navy", 
+     ylim = limy, xlim = limx, 
+     ylab = "", xlab = labx)
+mtext("B", 3, adj = 0, font = 2)
+grid.raster(readPNG("figs/female.png"), .66, .75, width = .08)
+abline(a = coefm[1], b = coefm[2], 
+       col = 'navy', lwd = 2)
 
 ```
 
@@ -683,29 +682,29 @@ abline(a=coefm[1], b=coefm[2],
 
 ```{r, fig.show="show", echo=FALSE}
 # define parametros graficos
-par(mfrow=c(1,2), las=1, bty="l")
+par(mfrow = c(1, 2), las = 1, bty = "l")
 # plot dos valores de salario dos homens
-plot(salario ~ experiencia, data=sal[sal$sexo=="H",], 
-     col="tomato",
-     ylim=limy, xlim=limx,
-     ylab=laby, xlab=labx)
+plot(salario ~ experiencia, data = sal[sal$sexo == "H", ], 
+     col = "tomato",
+     ylim = limy, xlim = limx, 
+     ylab = laby, xlab = labx)
 # linha do previsto pelo modelo
 ## a + b*x 
-abline(a=coefh[1], b=coefh[2],
-       col='tomato', lwd=2)
-mtext("A", 3, adj=0, font=2)
-grid.raster(readPNG("figs/male.png"), .16, .75, width=.10)
+abline(a = coefh[1], b = coefh[2], 
+       col = 'tomato', lwd = 2)
+mtext("A", 3, adj = 0, font = 2)
+grid.raster(readPNG("figs/male.png"), .16, .75, width = .10)
 ## plot do salario das mulheres
-plot(salario ~ experiencia, data=sal[sal$sexo=="M",], 
-     col="navy",
-     ylim=limy, xlim=limx,
-     ylab="", xlab=labx)
-mtext("B", 3, adj=0, font=2)
-grid.raster(readPNG("figs/female.png"), .66, .75, width=.08)
+plot(salario ~ experiencia, data = sal[sal$sexo == "M", ], 
+     col = "navy", 
+     ylim = limy, xlim = limx, 
+     ylab = "", xlab = labx)
+mtext("B", 3, adj = 0, font = 2)
+grid.raster(readPNG("figs/female.png"), .66, .75, width = .08)
 # linha do previsto pelo modelo
 ## a + b*x 
-abline(a=coefm[1], b=coefm[2],
-       col='navy', lwd=2)
+abline(a = coefm[1], b = coefm[2], 
+       col = 'navy', lwd = 2)
 
 ```
 
@@ -715,7 +714,7 @@ abline(a=coefm[1], b=coefm[2],
 \footnotesize
 ```{r }
 data(longley)
-head(longley)
+head(longley)[, 1:5]
 ```
 
 ## séries temporais
@@ -728,18 +727,18 @@ barplot(GNP ~ Year, data = longley)
 
 
 ```{r, fig.width=4, fig.height=4, fig.align='center' }
-plot(GNP ~ Year, data = longley, type='l',
-     xaxt='n', las=1, bty='l', lty=2, lwd=2)
-axis(1, at=longley$Year)
+plot(GNP ~ Year, data = longley, type = 'l',
+     xaxt = 'n', las = 1, bty = 'l', lty = 2, lwd = 2)
+axis(1, at = longley$Year)
 ```
 
 
 ## séries temporais de uma \alert{melhor} forma
 
 ```{r, fig.width=4, fig.height=4, fig.align='center'  }
-plot(GNP ~ Year, data = longley, type='l',
-     xaxt='n', las=1, bty='l', lty=1, lwd=2)
-axis(1, at=longley$Year)
+plot(GNP ~ Year, data = longley, type = 'l', 
+     xaxt = 'n', las = 1, bty = 'l', lty = 1, lwd = 2)
+axis(1, at = longley$Year)
 ```
 
 # 3. perfumaria

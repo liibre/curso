@@ -1,0 +1,562 @@
+---
+title: "projetos de análise de dados usando R"
+subtitle: "introdução a relatórios reprodutíveis usando R e markdown: rmarkdown"
+author: "Andrea Sánchez-Tapia, Sara Mortara, Diogo Rocha"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+duo_accent(
+  primary_color = "#A70000",
+  secondary_color = "#ff0000",
+  white_color = "white",
+  header_font_google = google_font("Roboto Condensed"),
+  text_font_google   = google_font("Roboto Condensed", "300", "300i"),
+  code_font_google   = google_font("Ubuntu Mono"), text_font_size = "30px"
+)
+```
+
+## até hoje 
+
++ conceitos de ciência aberta
++ estrutura de um projeto de análise de dados
++ controle de versões usando git/GitHub
++ formatação de planilhas
++ análise exploratória de dados
+
+### hoje: 
+__redação de relatórios/manuscritos reprodutíveis__
+
+---
+## redigindo documentos
+
+`Dados > Análise >` __`Redação`__
+--
+
++ Abre word
+--
+
++ Copia e cola as figuras...
+--
+
++ Perde __muito tempo__ configurando as figuras `¬¬` 
+--
+
++ Copia e cola os valores no texto: "A média de altura foi `crtl+c` `ctrl+v` m"
+--
+
++ Percebe um erro
+--
+
++ Refaz as análises ___teoricamente_ isto não é mais um problema porque a gente tem um script__
+--
+
++ Copia e cola as figuras...
+--
+
++ Perde __muito tempo__ configurando as figuras `¬¬`...
+--
+
++ RECopia e REcola os valores corrigidos no texto...
+--
+
++ Percebe um erro...
+
+---
+
+### E se houvesse um jeito de aproveitar a capacidade de script do R para fazer documentos completos?
+--
+
+### E se houvesse uma maneira de aproveitar a capacidade de git de monitorar mudanças nos arquivos para monitorar as mudanças realizadas em um manuscrito?
+
+![](https://media.giphy.com/media/3o7buirYcmV5nSwIRW/giphy.gif)
+
+
+---
+## o conceito: "typesetting"
+
+"formatação, composição tipográfica"
+
+```{r, echo = F}
+knitr::include_graphics("figs/gut.jpeg")
+```
+
+---
+## a gente está acostumada com word e similares...
+
++ editores de texto __WYSIWYG - What you see is what you get__
+--
+
++ qualquer formatação mais profissional a cargo de desenhadores, diagramadores...
+--
+
++ a dificuldade é lidar com __paginação__, __tamanho/posicionamento__ de figuras, __fórmulas__ e com o __fluxo do texto__
+
+---
+## LaTeX
+
++ Sistema de preparação de documentos com alta qualidade tipográfica 
+
++ Lidando corretamente com notação matemática, científica, algebraica etc. 
+
++ Linguagem programática 
+
++ Baseados em arquivos de texto
+
++ __não é WYSIWYG__ precisa portanto de marcar de alguma maneira o formato: marcações (_markup_)
+
+---
+## marcações de LaTeX
+
+.pull-left[
+`\textit{italico}`
+
+`\textbf{negrito}`
+]
+
+.pull-right[
+
+$\textit{italico}$
+
+$\textbf{negrito}$
+]
+
++ Muito poderoso com fórmulas e posicionamento de figuras
+
+---
+
+## vantagens de usar $\LaTeX$
+
++ Output maravilhoso <3
+
+--
+
++ Pode ser usado em [__controle de versões__]() como `git` 
+
+--
+
++ Arquivos de $\LaTeX$ podem ser submetidos como manuscritos para algumas revistas
+
+--
+
++ Templates de teses e dissertações em várias instituições
+
+--
+
++ Outros formatos: apresentações de __beamer__
+
+--
+
++ Dá para incluir código de R, que o código seja executado e que o output do código entre no documento
+
+<center> 
+
+<h1> Sweave</h1>
+
+</center>
+
+
+---
+## aprender LaTeX
+
++ questão de costume e/ou necessidade
+
+--
+
++ sistema de pacotes às vezes complicado
+
+--
+
++ uma boa opção para aprender: __Overleaf__
+
+---
+class: 
+background-image: url(figs/overleaf.png)
+background-size: 90%
+
+## overleaf
+
+.footnote[
+
+Um editor de $LaTeX$ e uma visualização. Arquivos `.tex`, `.bib` e figuras]
+
+---
+class: center, middle
+
+## markdown e rmarkdown
+
+---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/1024px-Markdown-mark.svg.png)
+background-size: 20%
+background-position: 90% 80%
+
+## markdown é $\LaTeX$ sem esteroides - e para muitas coisas isso é suficiente
+
+
++ Baseado em html, comandos relativamente simples
++ Arquivos de texto com extensão `.md` 
++ Facilmente "parseado" por várias plataformas - inclusive github __README.md__
+
+---
+## um exemplo de _markup_
+
+### peguem seus celulares e digitem no whatsapp
+
+
+.pull-left[
++ `oi` entre crases   
++ `_oi_`  
++ `*oi*`  
++ `~oi~`  
+]
+
+.pull-right[
++ `oi`  
++ __oi__  
++ _oi_  
++ ~~oi~~  
+]
+
+--
+
+(de nada :P)
+
+---
+## outro exemplo de _markup_
+
+`;)` já faz o emoji no hangouts
+
+No __slack__: icones entre `:smiley_face:`
+
+`:party_parrot:`
+![](https://media.giphy.com/media/l3q2zVr6cu95nF6O4/giphy.gif)
+
+---
+## marcações de markdown
+<small>
+.pull-left[
+`texto simples`  
+`__negrito__` e `**negrito**`  
+`superscript^2^`    
+`~~strikethrough~~`   
+`[link](www.rstudio.com)`
+`# Titulo 1`  
+`## Titulo 2`  
+]
+
+.pull-right[
+texto simples  
+__negrito__  e **negrito**  
+superscript<sup>2</sup>    
+~~strikethrough~~   
+[link](www.rstudio.com) 
+# Titulo 1  
+## Titulo 2  
+]
+</small>
+---
+## marcações de markdown e rmarkdown
+
+<small>
+.pull-left[
+`+ lista sem numerar`  
+`+ lista sem numerar`
+
+`1. lista numerada`  
+`1. lista numerada`
+]
+
+.pull-right[
++ lista sem numerar  
++ lista sem numerar
+
+1. lista numerada
+1. lista numerada
+
+]
+
+</small>
+
+#### E todos os comandos de html!  
+`<center> isto aqui fica centrado </center>`  
+<center> isto aqui fica centrado </center>
+
+
+---
+background-image: url(https://bookdown.org/yihui/rmarkdown/images/hex-rmarkdown.png)
+background-size: 20%
+background-position: 90% 80%
+
+## rmarkdown
+
++ para inserir código de `R`: __rmarkdown__
++ bem implementado (mas não exclusivo) em RStudio
++ em vez de __sweave__: rmarkdown -> `knitr`
+
++ em "chunks" de código visíveis ou invisíveis ou na mesma linha
+
+---
+## vantagens de usar rmakdown
+
++ mais fácil que LaTeX
+
++ mais fácil de inserir código
+
++ também funciona com git
+
++ formatos diferentes: apresentações, html, pdf, doc
+
+---
+background-image: url("figs/md_formats.png")
+background-size: 100%
+
+
+---
+## estrutura de um documento de rmarkdown
+
++ extensão `.Rmd`
++ um cabeçalho de metadados (chamado de __YAML__), com opções, entre outras o título, o autor, a data e o tipo de output que você quer. 
++ No cabeçalho `YAML` outras funções poderão ser incluídas posteriormente, inclusive a citação de artigos. 
+
+---
+## adicionando código de R
+
++ o código de R se encontra entre acentos graves triplos
++ Cada porção de código é chamada de _chunk_ na internet e na documentação de rmarkdown e rstudio.
+
+    
+
++ O primeiro _chunk_ tem as opções gerais que serão usadas. 
++ O texto vai por fora dos _chunks_, e pode ser formatado 
+
+---
+
+---
+## a conversão é realizada usando `pandoc`
+
+
++ knitr inclui o output de `R` no documento de markdown, gera um documento de markdown 
++ pandoc faz a conversão entre o markdown e qualquer outro formato
+
+---
+# citações em relatórios reprodutíveis
+
++ A citação é feita usando  `pandoc-citeproc` 
+
+---
+## bora fazer? 
+
++ Arquivo novo -> Rmarkdown.
++ Bote um título e seu nome, selecione html. 
++ Faça click em `knitr` e salve o arquivo na pasta [docs]() de seu projeto. 
++ Compare o que foi knittado com o arquivo original... 
+
+---
+
+## pasta de trabalho
+
++ Salve em `/docs`
++ Nas opções para knittar Knit directory: 
+    + Project directory: `getwd()` acesso via subpasta: `./data` mas os demais arquivos são interpretados a partir da pasta do documento e devem ser acessados subindo um nível com `..` e indo para a "pasta do lado" ex: `../data` 
+    + Document directory: acesso de tudo via "pasta do lado" `../data` - __é melhor fazer isto porque fica consistente ao longo do texto mas isto pode mudar caso a caso__.
+
+---
+### Dá para adicionar no git porque é texto!
+#### No terminal
+
+`git add docs <seu arquivo.Rmd>`  
+`git commit -m "uma mensagem de commit"`  
+`git push origin master`  
+
+# Não é preciso adicionar o arquivo html
+
+---
+## incluir plots
+
++ Pode gerar no chunk
++ Pode inserir output criado por fora `/figs/fig.png`
+
++ `![](/figs/fig.png)`
++ `knitr::include_graphics(figura)`
++ html `<img src ---->`
++ beamer `/includegraphics[]`
+
+etc.
+
+---
+## incluir tabelas
+
+Formato padrão
+
+`|   a|   b|   c|`  
+`|-:|-:|-:|`  
+`|   1|   2|   3|`  
+`|   2|   3|   4|`  
+
+
+|  a|  b|  c|
+|--:|--:|--:|
+|  1|  2|  3|
+|  2|  3|  4|
+
++ Existem serviços para gerar tabelas com este formato, como o __[markdown table generator](http://www.tablesgenerator.com/markdown_tables)__
+
+---
+## incluir tabelas
+
++ Para gerar tabelas desde os chunks de R:
+    + a função `kable` de knitr e o pacote `kableExtra` que dá mais opções __[(link)](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)__
+    
++ Para incluir qualquer tipo de output (por exemplo uma tabela de anova), o pacote __pander__ __[(link)](https://cran.r-project.org/web/packages/pander/vignettes/knitr.html)__
+
+
+---
+## incluir tabelas
+
+```{r}
+data(cars)
+pander::pander(head(cars))
+```
+
+---
+## incluir tabelas
+```{r}
+data(cars)
+knitr::kable(head(cars))
+```
+
+---
+class: center, middle
+
+# Gestão de bibliografia
+---
+## gestão de bibliografia
+
++ Dá para incorporar bibliografia 
++ [BibTeX](http://www.bibtex.org/) e o formato: `.bib`, originalmente usado para documentos de LaTeX
++ No yaml: `bibliography: refs.bib` + o arquivo `refs.bib` na pasta de trabalho (preferivelmente em `/docs/refs.bib`)
+
++ Gestor de bibliografias? Zotero? Mendeley?
+
+---
+background-image: url("https://www.zotero.org/static/images/theme/zotero-logo.1519224037.svg")
+background-size: 20%
+background-position: 90% 0%
+
+#  
+
++ Gestor de bibliografia de código aberto
+--
+
++ Uma extensão no navegador _download_ da citação e do pdf se ele estiver disponível
+--
+
++ Um app com as referências, ligado ou não a alguma pasta do computador
+--
+
++ Um conector para word e libreoffice
+--
+
++ Funcionalidade no google drive
+--
+
++ Uma página web que cria as citações a partir da URL ou o DOI. https://zbib.org/
+--
+
++ Uma página de estilos de citação (__Zotero style repository__)
+--
+
++ Uma série de addins
+--
+
++ __BetterBibTeX__:
+    + Cria as chaves de citação
+    + Exportar coleções em `.bib` e as mantém atualizadas
+
+---
+## citação no rmarkdown
+
++ Incluir o `.bib` e o `.csl` da bibliografia no yaml:
+    + `csl : ../citation/jvs.csl`
+    + `bibliography: ../citation/bibliografia.bib`
+
++ Citar usando o formato: `[@sobrenome_primeirapalavra_ano]` (olhar no zotero ou no mendeley o estilo de citação)
+
+---
+background-image: url("./figs/0newcollection.png")
+background-size: 100%
+
+#### Eu crio a coleção
+
+---
+background-image: url("./figs/1tukey_amazon.png")
+background-size: 100%
+
+#### Eu peguei a citação da Amazon...
+
+---
+background-image: url("./figs/2salvando.png")
+background-size: 100%
+
+#### Click no ícone
+
+---
+background-image: url("./figs/3app.png")
+background-size: 100%
+
+#### No app vejo o key
+
+---
+background-image: url("./figs/4export.png")
+background-size: 100%
+
+#### Exporto a coleção
+
+---
+background-image: url("./figs/5export.png")
+background-size: 100%
+
+#### BetterBibTeX - keep updated!
+---
+background-image: url("./figs/6bib.png")
+background-size: 100%
+
+---
+background-image: url("./figs/7csl.png")
+background-size: 100%
+
+---
+background-image: url("./figs/7_bib_e_csl.png")
+background-size: 100%
+---
+background-image: url("./figs/8cite.png")
+background-size: 100%
+---
+background-image: url("./figs/8cite_big.png")
+background-size: 100%
+---
+background-image: url("./figs/9opts.png")
+background-size: 100%
+---
+background-image: url("./figs/10output.png")
+background-size: 100%
+---
+## referências
+https://rmarkdown.rstudio.com
+https://peerj.com/preprints/3159/
+https://bookdown.org/yihui/rmarkdown/interactive-documents.html
+
