@@ -37,6 +37,7 @@ duo_accent(
 + controle de versões usando git/GitHub
 + formatação de planilhas
 + análise exploratória de dados
++ introdução a gráficos em R
 
 ### hoje: 
 __redação de relatórios/manuscritos reprodutíveis__
@@ -77,6 +78,7 @@ __redação de relatórios/manuscritos reprodutíveis__
 + Percebe um erro...
 
 ---
+class: center 
 
 ### E se houvesse um jeito de aproveitar a capacidade de script do R para fazer documentos completos?
 --
@@ -88,10 +90,9 @@ __redação de relatórios/manuscritos reprodutíveis__
 
 ---
 ## o conceito: "typesetting"
+### (formatação, composição tipográfica)
 
-"formatação, composição tipográfica"
-
-```{r, echo = F}
+```{r, echo = F, out.height=350}
 knitr::include_graphics("figs/gut.jpeg")
 ```
 
@@ -101,31 +102,34 @@ knitr::include_graphics("figs/gut.jpeg")
 + editores de texto __WYSIWYG - What you see is what you get__
 --
 
-+ qualquer formatação mais profissional a cargo de desenhadores, diagramadores...
++ qualquer formatação mais "profissional" fica a cargo de desenhadores, diagramadores...
 --
 
 + a dificuldade é lidar com __paginação__, __tamanho/posicionamento__ de figuras, __fórmulas__ e com o __fluxo do texto__
 
 ---
-## LaTeX
+## $\LaTeX$
 
-+ Sistema de preparação de documentos com alta qualidade tipográfica 
++ Sistema de preparação de documentos com __alta qualidade tipográfica__ 
+--
 
-+ Lidando corretamente com notação matemática, científica, algebraica etc. 
++ Lida corretamente com notação matemática, científica, algebraica etc. 
+--
 
-+ Linguagem programática 
-
-+ Baseados em arquivos de texto
++ Baseado em arquivos de texto
+--
 
 + __não é WYSIWYG__ precisa portanto de marcar de alguma maneira o formato: marcações (_markup_)
 
 ---
-## marcações de LaTeX
+## marcações de $\LaTeX$
 
 .pull-left[
 `\textit{italico}`
 
 `\textbf{negrito}`
+
+`\texttt{codigo}`
 ]
 
 .pull-right[
@@ -133,6 +137,8 @@ knitr::include_graphics("figs/gut.jpeg")
 $\textit{italico}$
 
 $\textbf{negrito}$
+
+$\texttt{codigo}$
 ]
 
 + Muito poderoso com fórmulas e posicionamento de figuras
@@ -143,35 +149,18 @@ $\textbf{negrito}$
 
 + Output maravilhoso <3
 
---
-
 + Pode ser usado em [__controle de versões__]() como `git` 
 
---
++ Arquivos de $\LaTeX$ podem ser __submetidos__ como manuscritos para algumas revistas
 
-+ Arquivos de $\LaTeX$ podem ser submetidos como manuscritos para algumas revistas
-
---
-
-+ Templates de teses e dissertações em várias instituições
-
---
++ __Templates__ de teses e dissertações em várias instituições
 
 + Outros formatos: apresentações de __beamer__
 
---
-
-+ Dá para incluir código de R, que o código seja executado e que o output do código entre no documento
-
-<center> 
-
-<h1> Sweave</h1>
-
-</center>
-
++ Dá para incluir código de R, que o código seja executado e que o output do código entre no documento (__Sweave__)
 
 ---
-## aprender LaTeX
+## aprender $\LaTeX$
 
 + questão de costume e/ou necessidade
 
@@ -188,11 +177,8 @@ class:
 background-image: url(figs/overleaf.png)
 background-size: 90%
 
-## overleaf
+## overleaf: um editor de $\LaTeX$ _online_ 
 
-.footnote[
-
-Um editor de $LaTeX$ e uma visualização. Arquivos `.tex`, `.bib` e figuras]
 
 ---
 class: center, middle
@@ -209,7 +195,7 @@ background-position: 90% 80%
 
 + Baseado em html, comandos relativamente simples
 + Arquivos de texto com extensão `.md` 
-+ Facilmente "parseado" por várias plataformas - inclusive github __README.md__
++ Facilmente "parseado" por várias plataformas - inclusive GitHub __README.md__
 
 ---
 ## um exemplo de _markup_
@@ -231,16 +217,14 @@ background-position: 90% 80%
 + ~~oi~~  
 ]
 
---
-
-(de nada :P)
 
 ---
 ## outro exemplo de _markup_
 
-`;)` já faz o emoji no hangouts
+`;)` já faz o emoji no hangouts  
+--
 
-No __slack__: icones entre `:smiley_face:`
+No __slack__: icones entre dois pontos `:smiley_face:`  
 
 `:party_parrot:`
 ![](https://media.giphy.com/media/l3q2zVr6cu95nF6O4/giphy.gif)
@@ -290,8 +274,8 @@ superscript<sup>2</sup>
 ]
 
 </small>
+--
 
-#### E todos os comandos de html!  
 `<center> isto aqui fica centrado </center>`  
 <center> isto aqui fica centrado </center>
 
@@ -305,14 +289,14 @@ background-position: 90% 80%
 
 + para inserir código de `R`: __rmarkdown__
 + bem implementado (mas não exclusivo) em RStudio
-+ em vez de __sweave__: rmarkdown -> `knitr`
++ __knitr__ em vez de __sweave__
 
-+ em "chunks" de código visíveis ou invisíveis ou na mesma linha
++ em "chunks" de código visíveis ou invisíveis (`echo = TRUE/FALSE`) ou na mesma linha ( `r` `nrow(cars)`)
 
 ---
 ## vantagens de usar rmakdown
 
-+ mais fácil que LaTeX
++ mais fácil que $\LaTeX$
 
 + mais fácil de inserir código
 
@@ -320,11 +304,33 @@ background-position: 90% 80%
 
 + formatos diferentes: apresentações, html, pdf, doc
 
++ novos pacotes relacionados: __blogdown__, __pagedown__, __bookdown__
+
 ---
 background-image: url("figs/md_formats.png")
 background-size: 100%
 
+---
+class: center, middle
 
+### como saber se é para usar LaTeX ou markdown?
+
+### se você precisa de um output mais profissional e tem a necessidade de fazer uma paginação muito consistente, vai pro LaTeX
+
+### vamos explorar markdown por enquanto
+
+---
+## exercício
+
+
++ Utilize markdown para formatar o texto do README.md, acrescentando Títulos de diferentes tamanhos, texto em negrito e itálico, código e um link [texto do link](endereço) 
+
++ add, commit
+
+---
+class: middle, center
+
+# rmarkdown
 ---
 ## estrutura de um documento de rmarkdown
 
@@ -333,32 +339,40 @@ background-size: 100%
 + No cabeçalho `YAML` outras funções poderão ser incluídas posteriormente, inclusive a citação de artigos. 
 
 ---
-## adicionando código de R
+## formatando texto no (r)markdown
 
-+ o código de R se encontra entre acentos graves triplos
-+ Cada porção de código é chamada de _chunk_ na internet e na documentação de rmarkdown e rstudio.
-
-    
-
-+ O primeiro _chunk_ tem as opções gerais que serão usadas. 
-+ O texto vai por fora dos _chunks_, e pode ser formatado 
-
----
++ Títulos com hashtags (`#` ,`##`)
++ Texto normal
++ Listas 
++ Formato (negrito, cursiva, código)
++ __Entre parágrafos precisa ter uma linha vazia__ 
++ Ou __quebra de linha__ com dois espaços no final
 
 ---
-## a conversão é realizada usando `pandoc`
+## ajuda para digitar: o pacote __remedy__
 
+__remedy__ é instalado como um __Addin__ de RStudio
 
-+ knitr inclui o output de `R` no documento de markdown, gera um documento de markdown 
-+ pandoc faz a conversão entre o markdown e qualquer outro formato
++ `ctrl + b` -> negrito
++ `ctrl + i` -> italico
++ `ctrl + k` -> link
++ `ctrl + 1` -> h1 (header)
++ `ctrl + 2` -> h1 (header)
++ `ctrl + r` -> insertar chunk de código!
 
 ---
-# citações em relatórios reprodutíveis
+## adicionando "chunks" de código de R
 
-+ A citação é feita usando  `pandoc-citeproc` 
++ o código de R se encontra entre __acentos graves triplos__ 
+
++ o primeiro _chunk_ tem as opções gerais que serão usadas
+
++ algumas opçoes básicas: `eval`, `echo`, `fig.width`, `message`, `warning`
+
++ dá para botar nas opções gerais ou em cada chunk, e contradizer a opção geral (override)
 
 ---
-## bora fazer? 
+## vamos criar
 
 + Arquivo novo -> Rmarkdown.
 + Bote um título e seu nome, selecione html. 
@@ -366,24 +380,14 @@ background-size: 100%
 + Compare o que foi knittado com o arquivo original... 
 
 ---
-
 ## pasta de trabalho
 
-+ Salve em `/docs`
-+ Nas opções para knittar Knit directory: 
-    + Project directory: `getwd()` acesso via subpasta: `./data` mas os demais arquivos são interpretados a partir da pasta do documento e devem ser acessados subindo um nível com `..` e indo para a "pasta do lado" ex: `../data` 
-    + Document directory: acesso de tudo via "pasta do lado" `../data` - __é melhor fazer isto porque fica consistente ao longo do texto mas isto pode mudar caso a caso__.
 
----
-### Dá para adicionar no git porque é texto!
-#### No terminal
++ Crie a pasta `/relatorio` e salve o `.Rmd` nela
 
-`git add docs <seu arquivo.Rmd>`  
-`git commit -m "uma mensagem de commit"`  
-`git push origin master`  
-
-# Não é preciso adicionar o arquivo html
-
++ Nas opções para knittar __Knit directory__:
+  + Document directory: acesso de tudo via "pasta do lado" `../data` - __é melhor fazer isto porque fica consistente ao longo do texto mas isto pode mudar caso a caso__.
+  
 ---
 ## incluir plots
 
@@ -393,7 +397,7 @@ background-size: 100%
 + `![](/figs/fig.png)`
 + `knitr::include_graphics(figura)`
 + html `<img src ---->`
-+ beamer `/includegraphics[]`
++ beamer `\includegraphics{}`
 
 etc.
 
@@ -447,7 +451,7 @@ class: center, middle
 ## gestão de bibliografia
 
 + Dá para incorporar bibliografia 
-+ [BibTeX](http://www.bibtex.org/) e o formato: `.bib`, originalmente usado para documentos de LaTeX
++ [BibTeX](http://www.bibtex.org/) e o formato: `.bib`, originalmente usado para documentos de $\LaTeX$
 + No yaml: `bibliography: refs.bib` + o arquivo `refs.bib` na pasta de trabalho (preferivelmente em `/docs/refs.bib`)
 
 + Gestor de bibliografias? Zotero? Mendeley?
@@ -559,4 +563,3 @@ background-size: 100%
 https://rmarkdown.rstudio.com
 https://peerj.com/preprints/3159/
 https://bookdown.org/yihui/rmarkdown/interactive-documents.html
-
