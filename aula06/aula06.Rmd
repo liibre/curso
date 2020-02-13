@@ -1,5 +1,5 @@
 ---
-title: "manipulação de dados"
+title: "análise de dados"
 author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo Rocha"
 date: "`r format(Sys.time(), '%d %b %Y')`"
 fontsize: 14pt
@@ -103,6 +103,8 @@ library(GGally)
 
 \begin{itemize}
 
+\pause \item não existe receita! 
+
 \pause \item pode levar entre 20 e 50\% do tempo das análises
 
 \pause \item deve ser iniciada ainda durante a coleta de dados
@@ -111,7 +113,7 @@ library(GGally)
 
 \end{itemize}
 
-![](figs/cover.png){width=400}
+![](figs/cover.png){width=200}
 
 ## importânica do gráfico e quarteto de \alert{Anscombe}
 
@@ -141,18 +143,20 @@ data("anscombe")
 ```
 
 ```{r, echo=TRUE}
-# média dos dados
-apply(anscombe, 2, mean)
+# estatisticas descritivas
+summary(anscombe)
 ```
 
-```{r, echo=TRUE}
-# variância dos dados
+## outras estatíticas
+
+\scriptsize
+```{r}
 apply(anscombe, 2, var)
 ```
 
-
 ## vamos olhar para os dados
 
+\footnotesize
 ```{r,echo=FALSE}
 anscombe
 ```
@@ -160,6 +164,7 @@ anscombe
 
 ## correlação entre x e y 
 
+\footnotesize
 ```{r, echo=TRUE}
 # correlação
 cor(anscombe$x1, anscombe$y1)
@@ -168,32 +173,20 @@ cor(anscombe$x3, anscombe$y3)
 cor(anscombe$x4, anscombe$y4)
 ```
 
-## coeficientes da regressão linear de x e y
-
-\scriptsize
-```{r, echo=TRUE}
-# coeficientes da regressão
-coef(lm(anscombe$y1 ~ anscombe$x1))
-coef(lm(anscombe$y2 ~ anscombe$x2))
-coef(lm(anscombe$y3 ~ anscombe$x3))
-coef(lm(anscombe$y4 ~ anscombe$x4))
-```
-
-
 ## agora sim vamos olhar para os dados do Anscombe
 
 ```{r, echo=FALSE, fig.align='center', fig.width=3.8, fig.height=3.5}
 cor.c <- "grey40"
-par(mfrow=c(2,2), bty='l', las=1, mar=c(3.8, 3.8, 2, 2))
-plot(y1 ~ x1, data=anscombe, pch=19, col=cor[2])
-abline(lm(y1 ~ x1, data=anscombe), lwd=2, col=cor.c)
-plot(y2 ~ x2, data=anscombe, pch=19, col=cor[3])
-abline(lm(y2 ~ x2, data=anscombe), lwd=2, col=cor.c)
-plot(y3 ~ x3, data=anscombe, pch=19, col=cor[4])
-abline(lm(y3 ~ x3, data=anscombe), lwd=2, col=cor.c)
-plot(y4 ~ x4, data=anscombe, pch=19, col=cor[5])
-abline(lm(y4 ~ x4, data=anscombe), lwd=2, col=cor.c)
-par(mfrow=c(1,1))
+par(mfrow = c(2, 2), bty = 'l', las = 1, mar = c(3.8, 3.8, 2, 2))
+plot(y1 ~ x1, data = anscombe, pch = 19, col = cor[2])
+abline(lm(y1 ~ x1, data = anscombe), lwd = 2, col = cor.c)
+plot(y2 ~ x2, data = anscombe, pch = 19, col = cor[3])
+abline(lm(y2 ~ x2, data = anscombe), lwd = 2, col = cor.c)
+plot(y3 ~ x3, data = anscombe, pch = 19, col = cor[4])
+abline(lm(y3 ~ x3, data = anscombe), lwd = 2, col = cor.c)
+plot(y4 ~ x4, data = anscombe, pch = 19, col = cor[5])
+abline(lm(y4 ~ x4, data = anscombe), lwd = 2, col = cor.c)
+par(mfrow = c(1, 1))
 ```
 
 ## perguntas que nos devemos fazer
@@ -214,96 +207,59 @@ par(mfrow=c(1,1))
 
 ## conferência de dados no R
 
-```{r, echo=TRUE}
-# lendo os dados da idade da população que usa fraldas
-fraldas <- read.csv("data/idade_fraldas.csv")
-```
-
-
-```{r, echo=FALSE}
-# criando NA, nao é para aparecer no código
-fraldas$idade[c(2,17)] <- NA
-```
-
-
-## checando os dados
-
-
 \footnotesize
 ```{r, echo=TRUE}
-# checando os dados
-head(fraldas)
-tail(fraldas)
+# lendo os dados gerados no script de manipulacao de dados
+dados <- read.csv("data/01_data_format_combined.csv")
+# lendo os dados com variáveis ambientais
+envir <- read.csv("data/cestes/envir.csv")
+# variaveis ambientais sem Site
+envir.vars <- envir[, -1]
 ```
 
+## \color{white}{} 
 
-
-## inspecionando os dados 
-
+\scriptsize
 ```{r, echo=TRUE}
-str(fraldas)
+str(dados)
 ```
 
+
+## \color{white}{} 
+
+\scriptsize
 ```{r, echo=TRUE}
-summary(fraldas)
+summary(dados)
 ```
-
 
 ## perguntas que devemos fazer aos dados #1
 
  1.  \pause existem valores faltantes i.e. (\alert{NA}s)? Eles são mesmo faltantes?
 
-
 ## teste lógico para encontrar \alert{NA} e \alert{zero}
 
 \scriptsize
 ```{r, echo=TRUE}
-is.na(fraldas$idade)
+apply(dados, 2, function(x) sum(is.na(x)))
 ```
 
-## onde está \alert{NA}
-
-
-```{r, echo=TRUE}
-which(is.na(fraldas$idade))
-```
-
-```{r, echo=TRUE}
-fraldas[c(2,17),]
-```
-
- vamos substituir NA por 0
-
-```{r, echo=TRUE}
-fraldas$idade[is.na(fraldas$idade)] <- 0
-```
-
-## conferindo se tem \alert{NA}
-
-\scriptsize
-```{r, echo=TRUE}
-is.na(fraldas$idade)
-```
-
-```{r, echo=TRUE}
-sum(is.na(fraldas$idade))
-```
 
 ## perguntas que devemos fazer aos dados #2
 
-
 2. \pause existem muitos \alert{zeros}?
-
 
 \scriptsize
 ```{r, echo=TRUE}
-fraldas$idade==0
+dados$Abundance == 0
 ```
 
-quantos?
+## quantos?
 
 ```{r, echo=TRUE}
-sum(fraldas$idade==0)
+sum(dados$Abundance == 0)
+
+# qual a proporção?
+sum(dados$Abundance == 0)/nrow(dados)
 ```
 
 ## perguntas que devemos fazer aos dados #3 #4 #5
@@ -316,50 +272,48 @@ sum(fraldas$idade==0)
 
 5. \pause  qual a distribuição da variável?
 
-```{r, echo=TRUE}
-summary(fraldas$idade)
-```
-
 
 ## medidas de tendência central
 
+\footnotesize
 ```{r mean}
 # media
-mean(fraldas$idade)
+mean(dados$Abundance)
 # mediana
-median(fraldas$idade)
+median(dados$Abundance)
 # valor mais frequente na amostra 
-freqf <- sort(table(fraldas$idade), decreasing = TRUE)
+freqf <- sort(table(dados$Abundance), 
+              decreasing = TRUE)
 freqf[1]
 ```
 
 ## medidas de dispersão
 
-\footnotesize
+\scriptsize
 ```{r disp}
 # variancia
-var(fraldas$idade)
+var(dados$Abundance)
 # desvio padrão
-sd(fraldas$idade)
+sd(dados$Abundance)
 # coeficiente de variação
-sd(fraldas$idade)/mean(fraldas$idade)*100
+sd(dados$Abundance)/mean(dados$Abundance)*100
 # intervalo
-range(fraldas$idade)
-diff(range(fraldas$idade))
+range(dados$Abundance)
+diff(range(dados$Abundance))
 ```
 
 ## quantis e intervalo inter-quantil (IIQ)
 
-\footnotesize
+\scriptsize
 ```{r qq}
 # quantis
-quantile(fraldas$idade)
+quantile(dados$Abundance)
 # lembrando da saida do summary
-summary(fraldas$idade)
+quantile(dados$Abundance)
 # mudando os quantis 
-quantile(fraldas$idade, probs=c(0.05, 0.5, 0.95))
+quantile(dados$Abundance, probs = c(0.05, 0.5, 0.95))
 # intervalo inter-quantil
-IQR(fraldas$idade)
+IQR(dados$Abundance)
 ```
 
 # 3. gráficos
@@ -367,205 +321,151 @@ IQR(fraldas$idade)
 ## visualizando os dados em um boxplot
 
 ```{r, fig.align='center', echo=TRUE, fig.width=4, fig.height=4}
-boxplot(fraldas$idade)
-```
-
-## visualizando os dados em um histograma
-
-```{r, fig.align='center', echo=TRUE, fig.width=3, fig.height=3}
-hist(fraldas$idade)
-```
-
-## separando bebês e vovxs
-
-```{r, echo=TRUE}
-bb <- fraldas[fraldas$idade<10,] 
-vv <- fraldas[fraldas$idade>10,]
-```
-## os novos gráficos: boxplot
-
-```{r, echo=TRUE, fig.width=9, fig.height=4.5, fig.pos="H"}
-par(mfrow=c(1,2))
-boxplot(bb$idade)
-boxplot(vv$idade)
-par(mfrow=c(1,1))
+boxplot(dados$Abundance)
 ```
 
 ## entendendo o boxplot
 
 ```{r, echo=FALSE, fig.show='asis', fig.align='center', fig.width=6, fig.height=5}
 set.seed(2)
-par(bty="n")
+par(bty = "n")
 bp <- rnorm(1000, 0, 0.1)
-boxplot(bp, yaxt="n", xlim=c(0,3), ylim=c(-0.3, 0.3))
-text(x=1.82, y=min(bp), "último ponto (-1,5 x IIQ)", cex=.9)
-text(x=1.72, y=quantile(bp)[2], "primeiro quartil", cex=.9)
-text(x=1.72, y=median(bp), "mediana", cex=.9)
-text(x=1.72, y=quantile(bp)[4], "terceiro quartil", cex=.9)
-text(x=1.82, y=bp[203], "último ponto (+1,5 x IIQ)", cex=.9)
-arrows(x0=0.68, x1 = 0.68, y0=quantile(bp)[2], y1=quantile(bp)[4], code=3, length=0.05)
-text(x=0.54, y=median(bp), "IIQ", cex=.9)
+boxplot(bp, yaxt = "n", xlim = c(0, 3), ylim=c(-0.3, 0.3))
+text(x = 1.82, y = min(bp), "último ponto (-1,5 x IIQ)", cex = .9)
+text(x = 1.72, y = quantile(bp)[2], "primeiro quartil", cex = .9)
+text(x = 1.72, y = median(bp), "mediana", cex = .9)
+text(x = 1.72, y = quantile(bp)[4], "terceiro quartil", cex = .9)
+text(x = 1.82, y = bp[203], "último ponto (+1,5 x IIQ)", cex = .9)
+arrows(x0 = 0.68, x1 = 0.68, y0 = quantile(bp)[2], y1 = quantile(bp)[4], code =
+         3, length = 0.05)
+text(x = 0.54, y = median(bp), "IIQ", cex = .9)
 ```
 
-## entendendo o boxplot
+## visualizando os dados em um histograma
 
-```{r box-again}
-par(mfrow=c(1,2))
-boxplot(bb$idade)
-boxplot(vv$idade)
-par(mfrow=c(1,1))
-
+```{r, fig.align='center', echo=TRUE, fig.width=3, fig.height=3}
+hist(dados$Abundance)
 ```
-
-## os novos gráficos: histograma
-
-```{r, echo=TRUE, fig.width=9, fig.height=4.5}
-par(mfrow=c(1,2))
-hist(bb$idade)
-hist(vv$idade)
-par(mfrow=c(1,1))
-```
-
 
 ## tipos de histograma
 
-
+\footnotesize
 ```{r, echo=TRUE, fig.width=9, fig.height=4.5}
-par(mfrow=c(1,2))
-hist(bb$idade)
-hist(bb$idade, probability = TRUE)
-par(mfrow=c(1,1))
+par(mfrow = c(1,2))
+hist(dados$Abundance)
+hist(dados$Abundance, probability = TRUE)
+par(mfrow = c(1,1))
 ```
 
 ## classes do histograma
 
+\footnotesize
 ```{r, echo=TRUE, fig.width=9, fig.height=3}
-par(mfrow=c(1,3))
-hist(bb$idade, breaks=seq(0, max(bb$idade), length=3))
-hist(bb$idade,  breaks=seq(0, max(bb$idade), length=5))
-hist(bb$idade)
-par(mfrow=c(1,1))
+par(mfrow = c(1,3))
+hist(dados$Abundance, 
+     breaks = seq(0, max(dados$Abundance), length = 3))
+hist(dados$Abundance,  
+     breaks = seq(0, max(dados$Abundance), length = 5))
+hist(dados$Abundance)
+par(mfrow = c(1,1))
 ```
 
 ## curvas empíricas de densidade probabilística
 
 representa a função que descreve a probabilidade de se encontrar determinado valor
 
+\scriptsize
 ```{r, echo=TRUE, fig.width=3, fig.height=3, fig.align='center'}
-hist(bb$idade, probability = TRUE )
+hist(dados$Abundance, probability = TRUE )
 ```
+
 ## curvas empíricas de densidade probabilística
 
+\scriptsize
 ```{r dens}
-plot(density(bb$idade))
+plot(density(dados$Abundance))
 ```
 
 ## distribuição se ajusta aos dados?
 
 distribuição discreta e assimétrica \textbf{$\rightarrow$} Poisson?
 
+\footnotesize
 ```{r, echo=TRUE}
-# máximo de idade
-bb.max <- max(bb$idade)
+# máximo de abundância
+ab.max <- max(dados$Abundance)
 # lambda
-bb.med <- mean(bb$idade)
+ab.med <- mean(dados$Abundance)
 ```
 
 ## distribuição \alert{Poisson} se ajusta aos dados?
 
-
+\footnotesize
 ```{r, echo=TRUE, fig.width=3, fig.height=3, fig.align='center'}
-hist(bb$idade, probability = TRUE)
-points(dpois(0:bb.max, bb.med), col=cor[5])
-lines(dpois(0:bb.max, bb.med), col=cor[5])
+hist(dados$Abundance, probability = TRUE)
+points(dpois(0:ab.max, ab.med), col = cor[5])
+lines(dpois(0:ab.max, ab.med), col = cor[5])
 ```
+
 # \Huge (distribuições estatístcas)
 
 ## distribuição normal ou gaussiana
+
 
 ```{r echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
 set.seed(42)
 a <- rnorm(200, 8, 1)
 b <- rnorm(200, 8, 1.5)
 c <- rnorm(200, 8, 2.5)
-curve(dnorm(x, mean(a), sd(a)), col="darkblue", lwd=2, ylim=c(0,0.5), xlim=c(4, 12),
-      xaxt="n", yaxt='n', xlab='', ylab='')
-curve(dnorm(x, mean(b), sd(b)), col="darkred", lwd=2, ylim=c(0,0.5), xlim=c(4, 12), add=TRUE)
-curve(dnorm(x, mean(c), sd(c)), col="darkgreen", lwd=2, ylim=c(0,0.5), xlim=c(4, 12), add=TRUE)
-legend('topright', lty=1, lwd=2, legend=paste0("sd=", c(1, 1.5, 2.5)),
-       col=c("darkblue", "darkred", "darkgreen"), bty='n')
+curve(dnorm(x, mean(a), sd(a)), col = "darkblue", lwd = 2,
+      ylim = c(0, 0.5), xlim = c(4, 12),
+      xaxt = "n", yaxt = 'n', xlab = '', ylab = '')
+curve(dnorm(x, mean(b), sd(b)), col = "darkred", lwd = 2,
+      ylim = c(0,0.5), xlim = c(4, 12), add = TRUE)
+curve(dnorm(x, mean(c), sd(c)), col = "darkgreen", lwd = 2,
+      ylim = c(0,0.5), xlim = c(4, 12), add = TRUE)
+legend('topright', lty = 1, lwd = 2, 
+       legend = paste0("sd=", c(1, 1.5, 2.5)),
+       col = c("darkblue", "darkred", "darkgreen"), bty ='n')
 ```
 
 ## por que amostragem é importante?
 
-\footnotesize
-```{r norm, fig.width=3.5, fig.height=3.5, fig.align='center'}
+\scriptsize
+```{r norm, echo = FALSE, fig.width=9, fig.height=3, fig.align='center'}
+par(mfrow = c(1, 3))
 a <- rnorm(200, 8, 1)
-hist(a, prob=TRUE)
+hist(a, prob = TRUE, main = "N = 200")
 curve(dnorm(x, mean(a), sd(a)),
-      col="darkred", lwd=2, add=TRUE)
-```
+      col = "darkred", lwd = 2, add = TRUE)
 
-## por que amostragem é importante?
-
-\footnotesize
-```{r norm2, fig.width=3.5, fig.height=3.5, fig.align='center'}
 a <- rnorm(100, 8, 1)
-hist(a, prob=TRUE)
-curve(dnorm(x, mean(a), sd(a)),
-      col="darkred", lwd=2, add=TRUE)
-```
+hist(a, prob = TRUE, main = "N = 200")
+curve(dnorm(x, mean(a), sd(a)), 
+      col = "darkred", lwd = 2, add = TRUE)
 
-
-## por que amostragem é importante?
-
-\footnotesize
-```{r norm3, fig.width=3.5, fig.height=3.5, fig.align='center'}
 a <- rnorm(10, 8, 1)
-hist(a, prob=TRUE)
+hist(a, prob = TRUE, main = "N = 200")
 curve(dnorm(x, mean(a), sd(a)),
-      col="darkred", lwd=2, add=TRUE)
+      col = "darkred", lwd = 2, add = TRUE)
 ```
 
 
 # 4. relações entre variáveis
 
-## Anderson \& Fisher e as espécies de  *Iris*
-
-<center>
-
-![](figs/fisher.jpeg){width=100} \hspace{2cm} ![](figs/edgar_anderson.jpeg){width=100}
-
-</center>
-
-![](figs/iris.png){width=300}
-
-## Anderson \& Fisher e as espécies de  *Iris*
-
-\footnotesize
-```{r iris}
-# carregando os dados no R
-data(iris)
-# para saber mais sobre o conjunto de dados consulte
-# ?iris
-# entendendo iris
-summary(iris)
-```
-
 ## gráfico de dispersão
 
 \footnotesize
-```{r dispersao, fig.align='center'}
-plot(Sepal.Width ~ Petal.Width, data=iris, col=iris$Species, pch=19)
-legend("topright", legend=unique(iris$Species), pch=19,
-       col=unique(iris$Species))
+```{r dispersao, fig.align = 'center'}
+plot(Clay ~ Silt, 
+      data = envir.vars, pch = 19)
 ```
 
 ## correlação entre as variáveis
 
-\footnotesize
+\scriptsize
 ```{r correlacao}
-cor(iris[1:4])
+cor(envir.vars)
 ```
 
 ## quando uma correlação é alta? \Large\alert{0.7}
@@ -574,18 +474,18 @@ cor(iris[1:4])
 
 ## correlação entre as variáveis
 
+\scriptsize
 ```{r pairs}
-pairs(iris[1:4], col=iris$Species)
+pairs(envir.vars)
 ```
 
 ## ou ainda melhor correlação entre as variáveis
 
-pacote \alert{GGally} com a função `ggpairs()`
+pacote __GGally__ com a função `ggpairs()`
 
 \footnotesize
-
 ```{r cor, echo=FALSE}
-ggpairs(iris[1:4])
+ggpairs(envir.vars)
 ```
 
 ## e quais os caminhos para a análise?
