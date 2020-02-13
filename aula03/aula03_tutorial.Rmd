@@ -132,8 +132,8 @@ Esta chave é _para cada computador individual_. Você pode ter uma conta de Git
 ### em GitHub: colar a chave RSA
 
 1. Log in
-2. __Perfil > Chaves ssh > criar uma chave ssh__
-4. Nome de seu computador
+2. Busque __Settings > SSH and GPG keys > criar uma chave ssh__
+4. Em title: o nome de seu computador
 5. Colar a chave que tinha sido copiada. 
 6. Add, OK. 
 
