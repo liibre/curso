@@ -1,26 +1,44 @@
 ---
-title: "Boas práticas na construção de gráficos"
-subtitle: ""
-author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo S. B. Rocha"
-date: "aula 07"
-output: beamer_presentation
-fonttheme: "professionalfonts"
-
+title: "contruindo gráficos em R"
+author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo Rocha"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+fontsize: 14pt
+output: 
+  beamer_presentation:
+    latex_engine: xelatex 
+    incremental: true
+    template:
+    
 header-includes:
   - \usepackage{longtable,booktabs}
   - \usepackage{graphicx}
   - \usepackage{float}
   - \usepackage{xcolor}
   - \usepackage{subfig}
+  - \usepackage{fontspec}
+  - \usefonttheme{professionalfonts} 
+  - \usefonttheme{serif} 
+  - \setmainfont{Roboto Condensed}
   - \definecolor{cor1}{HTML}{A70000}
-  - \definecolor{cor2}{HTML}{1C1C19}
+  - \definecolor{cor2}{HTML}{1C1C19} 
   - \definecolor{cor3}{HTML}{ff0000}
-  - \setbeamercolor{title}{fg=cor1}
-  - \setbeamercolor{frametitle}{fg=cor1}
-  - \setbeamercolor{structure}{fg=cor2}
+  - \setbeamercolor{title}{fg = cor1}
+  - \setbeamercolor{frametitle}{fg = cor1}
+  - \setbeamercolor{structure}{fg = cor2}
   - \renewcommand\alert[1]{\textcolor{cor3}{#1}}
+  - \setbeamertemplate{navigation symbols}{
+    {  \insertslidenavigationsymbol 
+    \insertframenavigationsymbol   
+    \insertsubsectionnavigationsymbol  
+    \insertsectionnavigationsymbol
+    \insertdocnavigationsymbol  
+    \insertbackfindforwardnavigationsymbol 
+    \hspace{1em}  
+    \usebeamerfont{footline} 
+    \insertframenumber/\inserttotalframenumber }
+    \setcounter{page}{1} 
+    \pagenumbering{arabic} }
 ---
-
 
 ```{r, include=FALSE, message=FALSE}
 options(tinytex.verbose = TRUE)
@@ -63,10 +81,14 @@ t3  35   low', header = TRUE)
 
 levels(d$z) <- c("high", "med", "low")
 
-cloud(y~x+z, d, panel.3d.cloud=panel.3dbars, col.facet=d$z, 
-      xbase=0.4, ybase=0.4, scales=list(arrows=FALSE, col=1), 
+cloud(y ~ x + z, d, 
+      panel.3d.cloud = panel.3dbars, 
+      col.facet = d$z, 
+      xbase = 0.4, 
+      ybase = 0.4, 
+      scales = list(arrows = FALSE, col = 1), 
       par.settings = list(axis.line = list(col = "transparent")),
-      main="meu gráfico 3D")
+      main = "meu gráfico 3D")
 ```
 
 ## não mesmo
@@ -90,9 +112,9 @@ pal <- wes_palette(3, name = "Zissou1", type = "continuous")
 
 
 ```{r ggbarplot, echo=FALSE, fig.width=4.5, fig.height=3}
-p <- ggplot(data=d, aes(x=x, y=y, fill=z)) +
-  geom_bar(stat="identity") +
-  scale_fill_manual(values=pal[3:1])+
+p <- ggplot(data = d, aes(x = x, y = y, fill = z)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = pal[3:1]) +
   theme_classic()
 p
 ```
@@ -103,11 +125,11 @@ p
 ```{r pie3d, echo=FALSE, fig.width=4.5, fig.height=4}
 slices <- c(10, 12, 4, 16, 8) 
 lbls <- c("US", "UK", "Australia", "Germany", "France")
-pct <- round(slices/sum(slices)*100)
+pct <- round(slices/sum(slices) * 100)
 lbls <- paste(lbls, pct) # add percents to labels 
-lbls <- paste(lbls,"%",sep="") # ad % to labels 
-pie3D(slices,labels=lbls,explode=0.1,
-   main="Pie Chart of Countries ")
+lbls <- paste(lbls,"%",sep = "") # ad % to labels 
+pie3D(slices, labels = lbls, explode = 0.1,
+   main = "Pie Chart of Countries")
 ```
 
 ## #nunca
@@ -120,8 +142,8 @@ pie3D(slices,labels=lbls,explode=0.1,
 ## como \alert{[NÃO]} fazer
 
 ```{r pie, echo=FALSE, fig.width=4.5, fig.height=4}
-pie(slices,labels = lbls, col=rainbow(length(lbls)),
-   main="Pie Chart of Countries")
+pie(slices,labels = lbls, col = rainbow(length(lbls)),
+   main = "Pie Chart of Countries")
 ```
 
 ## único gráfico de pizza possível
@@ -135,11 +157,11 @@ pie(slices,labels = lbls, col=rainbow(length(lbls)),
 nomes <- c("US", "UK", "Australia", "Germany", "France")
 names(pct) <- nomes
 perc <- paste0(pct, "%")
-par(mai=c(1,1,1,1))
-barplot(pct, horiz=TRUE, las=1, xlim=c(0, max(pct)+3))
-text(x=pct+1.1,
-     y=c(0.7, 1.9, 3.1, 4.3, 5.5),
-     labels=perc)
+par(mai = c(1, 1, 1, 1))
+barplot(pct, horiz = TRUE, las = 1, xlim = c(0, max(pct) + 3))
+text(x = pct + 1.1,
+     y = c(0.7, 1.9, 3.1, 4.3, 5.5),
+     labels = perc)
 ```
 
 
@@ -149,11 +171,11 @@ text(x=pct+1.1,
 nomes <- c("US", "UK", "Australia", "Germany", "France")
 perc <- paste0(sort(pct), "%")
 names(pct) <- nomes
-par(mai=c(1,1,1,1))
-barplot(sort(pct), horiz=TRUE, las=1, xlim=c(0, max(pct)+3))
-text(x=sort(pct)+1.1,
-     y=c(0.7, 1.9, 3.1, 4.3, 5.5),
-     labels=perc)
+par(mai = c(1, 1, 1, 1))
+barplot(sort(pct), horiz = TRUE, las = 1, xlim = c(0, max(pct) + 3))
+text(x = sort(pct) + 1.1,
+     y = c(0.7, 1.9, 3.1, 4.3, 5.5),
+     labels = perc)
 ```
 
 
@@ -162,50 +184,51 @@ text(x=sort(pct)+1.1,
 ```{r erro, echo=FALSE}
 # create dummy data
 set.seed(42)
-d2 <- data.frame(
-  name=letters[1:5],
-  value=sample(seq(4,15),5),
-  sd=c(1,0.2,3,2,4)
-)
+d2 <- data.frame(name = letters[1:5],
+                 value = sample(seq(4, 15), 5),
+                 sd = c(1, 0.2, 3, 2, 4))
 
-barplot(value ~ name, data=d2, las=1, bty='l')
+barplot(value ~ name, data = d2, las = 1, bty = 'l')
 ```
 
 ## um gráfico de barras com medida de erro é \alert{melhor}
 
 ```{r erro2, echo=FALSE}
-barplot(value ~ name, data=d2, las=1, bty='l', ylim=c(0, 18))
-arrows(x0=c(0.66, 1.88, 3.07, 4.25, 5.48),
-         y0=d2$value+d2$sd,
-         y1=d2$value-d2$sd, angle=90, length=0.1, code=3)
+barplot(value ~ name, data = d2, las = 1, 
+        bty = 'l', ylim = c(0, 18))
+arrows(x0 = c(0.66, 1.88, 3.07, 4.25, 5.48),
+       y0 = d2$value + d2$sd,
+       y1 = d2$value - d2$sd, angle = 90, length = 0.1, code = 3)
 ```
 
 ## melhor ainda é economizar tinta
 
 ```{r, echo=FALSE}
-plot(x=1:5, d2$value, las=1, bty='l', ylim=c(0, 18), pch=19, xaxt='n',
-     xlab="names", ylab="value")
-axis(1, at=1:5, labels=d2$name)
-arrows(x0=1:5,
-         y0=d2$value+d2$sd,
-         y1=d2$value-d2$sd, angle=90, length=0.05, code=3)
+plot(x = 1:5, d2$value, las = 1, bty = 'l', ylim = c(0, 18), 
+     pch = 19, xaxt = 'n',
+     xlab = "names", ylab = "value")
+axis(1, at = 1:5, labels = d2$name)
+arrows(x0 = 1:5,
+       y0 = d2$value + d2$sd,
+       y1 = d2$value - d2$sd, 
+       angle = 90, length = 0.05, code = 3)
 
 ```
 
 ## mas também a tinta tem que valer a pena
 
 ```{r, echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
-d3 <- data.frame(media=c(6.7, 12.3),
-                 sd=c(0.4, 0.98),
-                 tratamento=c(1, 2))
-plot(media ~ c(1,2), data=d3, las=1, bty='l',
-     xlab="tratamento", pch=19, xaxt='n', ylim=c(2, 15))
-axis(1, at=1:2, labels=c("1", "2"))
-arrows(x0=1:2,
-         y0=d3$media+d3$sd,
-         y1=d3$media-d3$sd, angle=90, length=0.05, code=3)
-
-
+d3 <- data.frame(media = c(6.7, 12.3),
+                 sd = c(0.4, 0.98),
+                 tratamento = c(1, 2))
+plot(media ~ c(1,2), data = d3, las = 1, bty = 'l',
+     xlab = "tratamento", pch = 19, xaxt = 'n', 
+     ylim = c(2, 15))
+axis(1, at = 1:2, labels = c("1", "2"))
+arrows(x0 = 1:2,
+       y0 = d3$media + d3$sd,
+       y1 = d3$media - d3$sd, 
+       angle = 90, length = 0.05, code = 3)
 ```
 
 ## uma tabela? 
@@ -225,14 +248,17 @@ arrows(x0=1:2,
 
 ```{r echo=FALSE, fig.height=8.5}
 require(graphics)
-dotchart(log(islands, 10), xlab="log10(area) (log10(sq. miles)", cex.lab=0.9)
+dotchart(log(islands, 10), 
+         xlab = "log10(area) (log10(sq. miles)", 
+         cex.lab = 0.9)
 ```
 
 ## um diagrama de pontos \alert{melhor}
 
 ```{r echo=FALSE,  fig.height=8.5}
 dotchart(log(islands[order(islands)], 10),
-          xlab="log10(area) (log10(sq. miles)", cex.lab=0.9)
+          xlab = "log10(area) (log10(sq. miles)", 
+         cex.lab = 0.9)
   
 ```
 
@@ -240,30 +266,30 @@ dotchart(log(islands[order(islands)], 10),
 
 ```{r, echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
 data(trees)
-plot(log(Volume) ~ log(Girth), data=trees,
-     pch=15, col="black", cex=2,
-     xlab="log(Diameter)")
-abline(lm(log(Volume) ~ log(Girth), data=trees))
+plot(log(Volume) ~ log(Girth), data = trees,
+     pch = 15, col = "black", cex = 2,
+     xlab = "log(Diameter)")
+abline(lm(log(Volume) ~ log(Girth), data = trees))
 ```
 
 ## como fazer \alert{melhor} 
 
 ```{r, echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
-plot(log(Volume) ~ log(Girth), data=trees,
-     pch=1, col="black", cex=1,
-     xlab="log(Diameter)", las=1)
-abline(lm(log(Volume) ~ log(Girth), data=trees))
+plot(log(Volume) ~ log(Girth), data = trees,
+     pch = 1, col = "black", cex = 1,
+     xlab = "log(Diameter)", las = 1)
+abline(lm(log(Volume) ~ log(Girth), data = trees))
 ```
 
 ## como fazer \alert{melhor} de outro jeito
 
 ```{r, echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
-mycol <- rgb(1, 68, 33, max = 255, alpha = 125)
-plot(log(Volume) ~ log(Girth), data=trees,
-     pch=19, cex=1,
-     xlab="log(Diameter)", las=1,
-     col=mycol, bty="l")
-abline(lm(log(Volume) ~ log(Girth), data=trees))
+mycol <- rgb(1, 68, 33, maxColorValue = 255, alpha = 125)
+plot(log(Volume) ~ log(Girth), data = trees,
+     pch = 19, cex = 1,
+     xlab = "log(Diameter)", las = 1,
+     col = mycol, bty = "l")
+abline(lm(log(Volume) ~ log(Girth), data = trees))
 ```
 
 
@@ -284,7 +310,7 @@ abline(lm(log(Volume) ~ log(Girth), data=trees))
 
 ## gráfico de barras
 
-\large
+\footnotesize
 ```{r }
 #perfil dos alunxs da disciplina
 nivel <- c("iniciante", "intermediário", "experiente")
@@ -295,31 +321,30 @@ alunxs
 
 ## gráfico de barras padrão
 
-```{r }
+```{r}
 barplot(perc ~ nivel, data = alunxs)
 ```
 
 ## como mudar a ordem das barras?
 
-
+\footnotesize
 ```{r }
 alunxs$nivel <- factor(alunxs$nivel,
                        levels = c("iniciante",
                                   "intermediário",
                                   "experiente"))
 alunxs$nivel
-
 ```
 
 ## gráfico de barras ordenado
 
+\footnotesize
 ```{r }
 # agora vamos refazer o gráfico
 barplot(perc ~ nivel, data = alunxs)
 ```
 
 ## deixando o rótulo do eixo y na vertical
-
 
 ```{r, fig.show='hide'}
 # las=1
@@ -329,16 +354,13 @@ barplot(perc ~ nivel, data = alunxs, las = 1)
 
 ## deixando o rótulo do eixo y na vertical
 
-
 ```{r, echo=FALSE}
 # las=1
-barplot(perc ~ nivel, data = alunxs,
-        las = 1)
+barplot(perc ~ nivel, data = alunxs, las = 1)
 ```
 
 
 ## mudando o rótulo dos eixos
-
 
 ```{r, fig.show='hide' }
 # usando xlab e ylab
@@ -350,7 +372,6 @@ barplot(perc ~ nivel, data = alunxs,
 
 ## mudando o rótulo dos eixos
 
-
 ```{r, echo=FALSE}
 # usando xlab e ylab
 barplot(perc ~ nivel, data = alunxs, 
@@ -361,7 +382,6 @@ barplot(perc ~ nivel, data = alunxs,
 
 
 ## incluindo cor
-
 
 ```{r, fig.show='hide'}
 # argumento col
@@ -446,6 +466,7 @@ barplot(perc ~ nivel, data = alunxs,
 
 ## incluindo cor pelo código RGB
 
+\footnotesize
 ```{r, echo=FALSE}
 # 
 barplot(perc ~ nivel, data = alunxs,
@@ -478,6 +499,7 @@ barplot(perc ~ nivel, data = alunxs,
 
 ## gráfico de barras com subcategorias
 
+\footnotesize
 ```{r, fig.show='hide'}
 d.Titanic <- as.data.frame(Titanic)
 head(d.Titanic)
@@ -521,6 +543,7 @@ mosaicplot(xt[, , "Male"], main = "", color = TRUE)
 
 ## gráfico de dispersão
 
+\footnotesize
 ```{r, fig.show='hide'}
 m1 <- lm(log(dist) ~ log(speed), data = cars)
 plot(log(dist) ~ log(speed), data = cars,
@@ -538,6 +561,17 @@ abline(m1)
 
 ## gráfico de dispersão com cor transparente
 
+```{r, echo=FALSE, fig.height=4, fig.width=4, fig.show='hide'}
+mycol <- rgb(0, 0, 0, maxColorValue = 255, alpha = 125)
+m1 <- lm(log(dist) ~ log(speed), data = cars)
+plot(log(dist) ~ log(speed), data = cars,
+     las = 1, bty = 'l', pch = 19, 
+     col = mycol)
+abline(m1)
+```
+
+
+## gráfico de dispersão com cor transparente
 
 ```{r, echo=FALSE, fig.height=4, fig.width=4}
 mycol <- rgb(0, 0, 0, maxColorValue = 255, alpha = 125)
@@ -624,94 +658,9 @@ barplot(yhist$counts, axes = FALSE, xlim = c(0, top),
 #mtext("log(dist)", 2,outer=TRUE)
 ```
 
-## mais gráficos com múltiplas janelas
-
-\footnotesize
-
-```{r }
-sal <- read.csv("data/salarios.csv")
-head(sal)
-# criando modelos lineares
-mh <- lm(salario ~ experiencia, data = sal[sal$sexo == "H",])
-mm <- lm(salario ~ experiencia, data = sal[sal$sexo == "M",])
-coefh <- coef(mh)
-coefm <- coef(mm)
-# definindo os limites dos eixos
-limy <- c(min(sal$salario),max(sal$salario))
-limx <- c(min(sal$experiencia),max(sal$experiencia))
-## definindo os nomes dos eixos
-labx <- "Experiência (anos)"
-laby <- "Salário (R$)"
-```
-
-
-## criando o gráfico com janelas A e B
-
-
-\footnotesize
-```{r, fig.show="hide", echo=TRUE}
-# define parametros graficos
-par(mfrow = c(1, 2), las = 1, bty = "l")
-# plot dos valores de salario dos homens
-plot(salario ~ experiencia, 
-     data = sal[sal$sexo == "H",], 
-     col = "tomato",
-     ylim = limy, xlim = limx, 
-     ylab = laby, xlab = labx)
-# linha do previsto pelo modelo a + bx
-abline(a = coefh[1], b = coefh[2],
-       col = 'tomato', lwd = 2)
-mtext("A", 3, adj = 0, font = 2)
-grid.raster(readPNG("figs/male.png"), .16, .75, width = .10)
-## plot do salario das mulheres
-plot(salario ~ experiencia, data = sal[sal$sexo == "M", ], 
-     col = "navy", 
-     ylim = limy, xlim = limx, 
-     ylab = "", xlab = labx)
-mtext("B", 3, adj = 0, font = 2)
-grid.raster(readPNG("figs/female.png"), .66, .75, width = .08)
-abline(a = coefm[1], b = coefm[2], 
-       col = 'navy', lwd = 2)
-
-```
-
-
-
-## criando o gráfico com janelas A e B
-
-
-```{r, fig.show="show", echo=FALSE}
-# define parametros graficos
-par(mfrow = c(1, 2), las = 1, bty = "l")
-# plot dos valores de salario dos homens
-plot(salario ~ experiencia, data = sal[sal$sexo == "H", ], 
-     col = "tomato",
-     ylim = limy, xlim = limx, 
-     ylab = laby, xlab = labx)
-# linha do previsto pelo modelo
-## a + b*x 
-abline(a = coefh[1], b = coefh[2], 
-       col = 'tomato', lwd = 2)
-mtext("A", 3, adj = 0, font = 2)
-grid.raster(readPNG("figs/male.png"), .16, .75, width = .10)
-## plot do salario das mulheres
-plot(salario ~ experiencia, data = sal[sal$sexo == "M", ], 
-     col = "navy", 
-     ylim = limy, xlim = limx, 
-     ylab = "", xlab = labx)
-mtext("B", 3, adj = 0, font = 2)
-grid.raster(readPNG("figs/female.png"), .66, .75, width = .08)
-# linha do previsto pelo modelo
-## a + b*x 
-abline(a = coefm[1], b = coefm[2], 
-       col = 'navy', lwd = 2)
-
-```
-
-
 ## séries temporais
 
-\footnotesize
+\scriptsize
 ```{r }
 data(longley)
 head(longley)[, 1:5]
@@ -719,14 +668,15 @@ head(longley)[, 1:5]
 
 ## séries temporais
 
-```{r , fig.width=4, fig.height=4, fig.align='center' }
+\scriptsize
+```{r, fig.width=3.7, fig.height=3.7, fig.align='center' }
 barplot(GNP ~ Year, data = longley)
 ```
 
 ## séries temporais de outra forma
 
-
-```{r, fig.width=4, fig.height=4, fig.align='center' }
+\scriptsize
+```{r, fig.width=3.7, fig.height=3.7, fig.align='center' }
 plot(GNP ~ Year, data = longley, type = 'l',
      xaxt = 'n', las = 1, bty = 'l', lty = 2, lwd = 2)
 axis(1, at = longley$Year)
@@ -735,7 +685,8 @@ axis(1, at = longley$Year)
 
 ## séries temporais de uma \alert{melhor} forma
 
-```{r, fig.width=4, fig.height=4, fig.align='center'  }
+\scriptsize
+```{r, fig.width=3.7, fig.height=3.7, fig.align='center'  }
 plot(GNP ~ Year, data = longley, type = 'l', 
      xaxt = 'n', las = 1, bty = 'l', lty = 1, lwd = 2)
 axis(1, at = longley$Year)
@@ -752,6 +703,7 @@ axis(1, at = longley$Year)
   
 - ícones para adicionar em gráficos:
   - [The noun project](https://thenounproject.com/)
+  - [iconmonst](https://iconmonstr.com/)
 
 - pacotes de R:
   - `wesanderson`
@@ -773,9 +725,11 @@ axis(1, at = longley$Year)
 
 ![](figs/ggplot.png){width=350}
 
-##
+## @accidental_aRt
 
+![](figs/accidental_aRt.png){width=350}
 
-$ %## extra
-%Vamos brincar um pouco com as cores, o R aceita tanto as especificação de cor usando um nome já existente no R como usando o código RGB ou hexadecimal de definição de cores em bytes. Se for usar nomes, tem nomes como “black”, “darkgreen”, “tomato” e você encontra uma vasta lista no link (http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf). Se for usar a especificação em RGB precisamos usar a função RGB, ou de forma mais direta, o R aceita o nome da cor em hexadecimal diretamente. A especificação de cores em código é bastante útil quando você quer criar sua própria paleta de cores. $
-  
+## Danielle Navarro <3 https://djnavarro.net/art/
+
+![](figs/djnavarro.png){width=400}
+

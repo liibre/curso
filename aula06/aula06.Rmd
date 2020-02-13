@@ -1,5 +1,5 @@
 ---
-title: "análise de dados"
+title: "análise exploratória de dados"
 author: "Sara Mortara, Andrea Sánchez-Tapia, Diogo Rocha"
 date: "`r format(Sys.time(), '%d %b %Y')`"
 fontsize: 14pt
