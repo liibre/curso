@@ -65,6 +65,12 @@ duo_accent(
   + Hadley Wickham: [R for Data Science]()
 
 ---
+## estatística
+
++ Danielle Navarro: [Learning Statistics with R](https://learningstatisticswithr.com)
++ Michael Crawley: [The R book]()
+
+---
 ## onde continuar aprendendo
 
 + disciplinas de R
@@ -72,6 +78,7 @@ duo_accent(
 + tutoriais online
 + meetups (reuniões) de grupos: RLadies
 + o help dos pacotes: vegan: a própria página do Jari Oksanen
+
 ---
 ## buscar ajuda
 
@@ -85,8 +92,16 @@ duo_accent(
 ---
 ## reference card
 
+```{r, fig.width = 10, fig.align = 'center'}
+knitr::include_graphics("figs/ref_card.png")
+```
+
 ---
 ## cheat sheets 
+
+```{r, fig.width = 10, fig.align = 'center'}
+knitr::include_graphics("figs/cheet_sheet.png")
+```
 
 ---
 ## R Task views
@@ -98,6 +113,13 @@ Alguns pacotes organizados por temas, curados por um especialista
 + [https://cran.r-project.org/web/views/Phylogenetics.html](https://cran.r-project.org/web/views/Phylogenetics.html)
 ---
 class: middle, center
+
+---
+## task view: environmetrics
+
+```{r }
+knitr::include_graphics("figs/environmetrics.png")
+```
 
 # trabalho final 
 ---
