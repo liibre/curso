@@ -1,0 +1,32 @@
+## Reference card
+
+
+```{r}
+include.graphics("figs/ref_card.png")
+```
+
+## Cheet Sheets
+
+```{r}
+include.graphics("figs/cheet_sheets.png")
+```
+
+
+## R Data Science
+
+```{r}
+include.graphics("figs/R_data_science.png")
+```
+
+## Advanced R
+
+```{r}
+include.graphics("figs/advanced_R.png")
+```
+
+## Estatística
+
++ The R Book, Michael Crawley
++ [Learning Statistics with R, Danielle Navarro](https://learningstatisticswithr.com)
++ Ecological Models and Data in R, Ben Bolker
+ 
