@@ -446,15 +446,27 @@ knitr::kable(head(cars))
 ---
 class: center, middle
 
-# Gestão de bibliografia
+# Gestão de bibliografia em markdown
 ---
 ## gestão de bibliografia
 
-+ Dá para incorporar bibliografia 
-+ [BibTeX](http://www.bibtex.org/) e o formato: `.bib`, originalmente usado para documentos de $\LaTeX$
-+ No yaml: `bibliography: refs.bib` + o arquivo `refs.bib` na pasta de trabalho (preferivelmente em `/docs/refs.bib`)
++ [BibTeX](http://www.bibtex.org/) e o formato: `.bib`
 
-+ Gestor de bibliografias? Zotero? Mendeley?
++ No __YAML__: 
+  + `bibliography: refs.bib` 
+
++ Na pasta de trabalho (preferivelmente em `/relatorio/refs.bib`)
+  + o arquivo `refs.bib` 
+  + um __estilo de citação__  arquivo .csl 
+
+---
+## gestão de bibliografia 
+
++ __Como criar a bibliografia?__ Gestor de bibliografias? Zotero? Mendeley?
+
++ Programas que armazenam as citações e opcionalmente os arquivos das publicações
+
++ Citação automática
 
 ---
 background-image: url("https://www.zotero.org/static/images/theme/zotero-logo.1519224037.svg")
@@ -489,16 +501,28 @@ background-position: 90% 0%
 
 + __BetterBibTeX__:
     + Cria as chaves de citação
-    + Exportar coleções em `.bib` e as mantém atualizadas
+    + Exporta coleções em `.bib` e as mantém atualizadas
 
 ---
 ## citação no rmarkdown
 
 + Incluir o `.bib` e o `.csl` da bibliografia no yaml:
-    + `csl : ../citation/jvs.csl`
+    + `csl: ../citation/jvs.csl`
     + `bibliography: ../citation/bibliografia.bib`
 
-+ Citar usando o formato: `[@sobrenome_primeirapalavra_ano]` (olhar no zotero ou no mendeley o estilo de citação)
++ Citar usando o formato: `[@sobrenome_primeirapalavra_ano]` (olhar no zotero ou no mendeley a chave de citação)
+
+---
+## citação no rmarkdown
+
++ No __texto__, a citação é marcada assim: `@sobrenome_palavrachave_ano` 
+  + Ex. `[@tukey_exploratory_1977]` -> (Tukey, 1977)
+  + Ex. `@tukey_exploratory_1977` -> Tukey (1977)
+  + Ex. `[@tukey_exploratory_1977, @zuur_protocol_2010]` -> (Tukey 1977, Zuur et al. 2010)
+
++ O formato final depende do arquivo de estilo `.csl`
+
++ No final do texto são inseridas as referências completas
 
 ---
 background-image: url("./figs/0newcollection.png")
@@ -558,6 +582,29 @@ background-size: 100%
 ---
 background-image: url("./figs/10output.png")
 background-size: 100%
+---
+## diferentes estilos de citação
+
+oikos, nature, jvs, ecology-letters, vancouver 
+
+---
+class: middle, center
+
+## exportando arquivos de rmarkdown para word
+### spoiler: tudo funciona igual mas o padrão de word é horrível
+
+---
+## um documento de referência pro estilo
+
++ __no yaml__: 
+
+```
+word_document:
+    reference_docx: template_intro.docx
+```
+
++ vamos explorar várias opções desse documento de template
+
 ---
 ## referências
 https://rmarkdown.rstudio.com
