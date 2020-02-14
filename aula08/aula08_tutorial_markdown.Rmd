@@ -1,0 +1,49 @@
+---
+title: "introdução a markdown"
+author: "Andrea Sánchez-Tapia, Sara Mortara, Diogo S. B. Rocha"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output: 
+    html_document:
+        theme: cosmo
+        toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Explorando a marcação de markdown
+
++ No tutorial de git, você editou de maneira interessante e significativa seu README.md
+
++ Abra o README.md em RStudio, fazendo click no navegador interno de arquivos (aba __Files__)
+
++ Utilize markdown para formatar o texto do README.md, acrescentando Títulos de diferentes tamanhos, texto em __negrito__ e _itálico_, e texto em formato de `código`. 
+
++ Acrescente um link ao wiki do curso, usando a notação `[texto do link](endereço do link)`
+
+# Usando RStudio e markdown
+
+Quando você abre um documento de markdown no RStudio, há um botão específico __Preview__, com uma seta com opções (Preview HTML, Preview PDF, Preview Word). 
+
+A opção predeterminada é Preview html, se você clicar no botão, ele vai abrir o documento em uma nova janela ou na aba Viewer. 
+
+Para controlar este comportamento, basta indicar a RStudio no ícone da engranagem que você quer Prever o html "in Viewer pane" e não "in Window". 
+
+Para prever o output em PDF, você tem que ter instalado LaTeX. 
+
+Para prever o output em Word, você tem que ter instalado Word.
+
+Nota: quando você pede para o markdown processar o arquivo em pdf ou doc, o RStudio pode editar o cabeçalho do README.md para indicar algumas opções na hora de knittar. 
+
+# usando rmarkdown: acrescentando linhas de código a documentos de markdown
+
++ O Arquivo de rmarkdown tem a extensão .Rmd. Para criar um, clique no menu `File > New File > R markdown`, acrescente um título e autor e aceite. 
+
++ Qual a estrutura deste documento? Reconheça e edite o cabeçalho YAML 
+
++ Clique no botão __knit__ e compare o output com o documento de texto 
+
++ Leia este documento para entender como rmarkdown lida com os chunks de código
+
+
