@@ -15,7 +15,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
+options(htmltools.dir.version = FALSE, echo = F)
 ```
 
 ```{r xaringan-themer, include = FALSE}
@@ -92,14 +92,14 @@ duo_accent(
 ---
 ## reference card
 
-```{r, fig.width = 10, fig.align = 'center'}
+```{r, fig.width = 10, fig.align = 'center', echo=F}
 knitr::include_graphics("figs/ref_card.png")
 ```
 
 ---
 ## cheat sheets 
 
-```{r, fig.width = 10, fig.align = 'center'}
+```{r, fig.width = 10, fig.align = 'center', echo = F}
 knitr::include_graphics("figs/cheet_sheet.png")
 ```
 
@@ -111,13 +111,11 @@ Alguns pacotes organizados por temas, curados por um especialista
 + [https://cran.r-project.org/web/views/](https://cran.r-project.org/web/views/)
 + [https://cran.r-project.org/web/views/Multivariate.html](https://cran.r-project.org/web/views/Multivariate.html)
 + [https://cran.r-project.org/web/views/Phylogenetics.html](https://cran.r-project.org/web/views/Phylogenetics.html)
----
-class: middle, center
 
 ---
 ## task view: environmetrics
 
-```{r }
+```{r ,echo=FALSE}
 knitr::include_graphics("figs/environmetrics.png")
 ```
 
