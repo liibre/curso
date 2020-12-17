@@ -1,3 +1,5 @@
+# Disciplina: Projetos de análise de dados usando R (ENBT-JBRJ)
+
 Página para a divulgação dos conteúdos das aulas da disciplina "Projetos de análise de dados usando R". Essa á uma discipĺina especial do Programa de Pós-Graduação em Botânica da Escola Nacional de Botânica Tropical do Jardim Botânico do Rio de Janeiro. A disciplina é anual e foi ministrada nos anos de 2019 e 2020 por Andrea Sánchez-Tapia, Sara Ribeiro Mortara e Diogo Rocha.
 
 ## **O por quê do curso?**
